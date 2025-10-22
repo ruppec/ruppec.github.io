@@ -1,3 +1,9 @@
-theme: jekyll-theme-minimal
-title: Charlie's homepage
-description: This is my site!
+theme: minima
+title: Charlie Ruppe
+#description: this is my website.
+
+permalink: pretty
+
+author:
+  name: Charlie Ruppe
+  email: ruppe dot charlie @gmail.com
