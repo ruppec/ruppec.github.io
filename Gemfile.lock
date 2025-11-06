@@ -27,6 +27,7 @@ GEM
     concurrent-ruby (1.3.5)
     connection_pool (2.5.4)
     csv (3.3.5)
+    digest (3.1.1)
     dnsruby (1.73.0)
       base64 (>= 0.2)
       logger (~> 1.6)
@@ -103,9 +104,14 @@ GEM
     html-pipeline (2.14.3)
       activesupport (>= 2)
       nokogiri (>= 1.4)
+    htmlentities (4.3.4)
     http_parser.rb (0.8.0)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
+    jektex (0.1.1)
+      digest (~> 3.1.1, >= 3.1.1)
+      execjs (~> 2.1, >= 2.9.1)
+      htmlentities (~> 4.3, >= 4.3.4)
     jekyll (3.10.0)
       addressable (~> 2.4)
       colorator (~> 1.0)
@@ -277,6 +283,7 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
+  jektex
   webrick (~> 1.8)
 
 BUNDLED WITH

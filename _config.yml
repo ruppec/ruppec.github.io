@@ -7,3 +7,18 @@ permalink: pretty
 author:
   name: Charlie Ruppe
   email: ruppe dot charlie @gmail.com
+
+plugins:
+  - jektex
+
+jektex:
+  cache_dir: ".jektex-cache"
+
+exclude:
+  - ".jekyll-cache"
+  - ".jektex-cache"
+
+kramdown:
+  # This tells Kramdown to pass the math content through as-is, 
+  # which should prevent it from leaving the original text behind.
+  math_engine: null
