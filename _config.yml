@@ -1,6 +1,8 @@
-theme: minima
+#theme: jekyll-theme-tactile
 title: Charlie Ruppe
 #description: this is my website.
+
+remote_theme: pages-themes/tactile@v0.2.0
 
 permalink: pretty
 
@@ -10,6 +12,7 @@ author:
 
 plugins:
   - jektex
+  - jekyll-remote-theme
 
 jektex:
   cache_dir: ".jektex-cache"
