@@ -10,6 +10,11 @@ author:
   name: Charlie Ruppe
   email: ruppe dot charlie @gmail.com
 
+collections:
+  demos:
+    output: true
+
+
 plugins:
   - jektex
   - jekyll-remote-theme

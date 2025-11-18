@@ -1,0 +1,103 @@
+<!-- This layout is for simple shadertoy programs without textures, multiple buffers or input. If more features are needed one can write it explicitly in the post or write a new layout that uses captures
+     -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.title }} - {{ site.title }}</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <style>
+      html, body {
+          margin: 0;
+          height: 100%;
+      }
+      #drawCanvas {
+          width: 100%;
+          height: 100%;
+          display: block;
+      }
+
+      #title {
+          position: absolute;
+          top: 0px;
+          left: 80px;
+          padding: 12px;
+          z-index: 100;
+          display: block;
+          font-family: Monaco, monospace;
+          color: white;
+          background: rgba(0,0,0,0.5)
+      }
+
+      #credit {
+          position: absolute;
+          bottom: 0px;
+          right: 0px;
+          font-family: Monaco, monospace;
+          color: white;
+          background: rgba(0,0,0,0.5);
+          font-size: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="drawCanvas" width=500 height=500></canvas>
+    <script src="/ShaderToyLite.js"></script>
+    <script id="Image" type="x-shader/x-fragment">
+      {{ content }}
+    </script>
+    <script type="module">
+      import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.21/+esm';
+      const gui = new GUI();
+
+      const controlObject = {
+          animate: true,
+          reset: function() { toy.reset() },
+          scale: 1
+      }
+
+      gui.add(controlObject, 'animate').onChange( value => {
+          if(value)
+              toy.play();
+          else toy.pause();
+      });
+      gui.add(controlObject, 'reset');
+
+      const canvas = document.getElementById('drawCanvas');
+      const widthControl = gui.add(canvas, 'width', .25*window.innerWidth, window.innerWidth, 10);
+      const heightControl = gui.add(canvas, 'height', .25*window.innerHeight, window.innerHeight, 10);
+      gui.add(controlObject, 'scale', .25, 1.).onChange( scale => {
+          canvas.width = window.innerWidth*scale;
+          canvas.height = window.innerHeight*scale;
+          widthControl.updateDisplay();
+          heightControl.updateDisplay();
+      });
+
+      import Stats from 'https://cdnjs.cloudflare.com/ajax/libs/stats.js/r17/Stats.min.js';
+      const stats = new Stats();
+      stats.showPanel(0);
+      document.body.appendChild(stats.dom);
+
+      var toy = new ShaderToyLite('drawCanvas');
+      toy.setCommon('');
+      toy.setImage({source: document.getElementById("Image").innerText});
+
+      // Wrap the existing requestAnimationFrame
+      const originalRAF = window.requestAnimationFrame;
+      window.requestAnimationFrame = function(callback) {
+          return originalRAF(function(time) {
+              stats.begin();
+              callback(time);
+              stats.end();
+          });
+      };
+
+      toy.play()
+    </script>
+
+    <div id="title">{{ page.title }}</div>
+    <div id="credit">Credit:
+      {{ page.acknowledgement | markdownify | remove: '<p>' | remove: '</p>' }}</div>
+  </body>
+</html>

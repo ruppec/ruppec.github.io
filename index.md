@@ -16,6 +16,14 @@ ruppec at carleton.edu
 
 - Joint Math Meetings, Washington DC. Presenting with Dennis Belotserkovskiy on
    our recent paper. Jan 4th.
+   
+## What I am working on...
+
+My senior thesis in math illustration is looking to generate new intuition for
+certain data and objects by visualizing them in non-euclidean spaces using
+computer graphics.
+
+Follow my progress on my [demos page!](demos)
 
 ## Research
 

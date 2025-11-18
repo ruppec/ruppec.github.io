@@ -138,13 +138,19 @@ function ShaderToyLite(canvasId) {
         });
     
         canvas.addEventListener("mousemove", (event) => {
-            iMouse.x = event.offsetX;
-            iMouse.y = canvas.height - event.offsetY;
+            const scaleX = canvas.width / canvas.clientWidth;
+            const scaleY = canvas.height / canvas.clientHeight;
+            iMouse.x = event.offsetX * scaleX;
+            iMouse.y = (canvas.height - event.offsetY) * scaleY;
         });
     
         canvas.addEventListener("mousedown", (event) => {
-            iMouse.clickX = event.offsetX;
-            iMouse.clickY = canvas.height - event.offsetY;
+            const scaleX = canvas.width / canvas.clientWidth;
+            const scaleY = canvas.height / canvas.clientHeight;
+            iMouse.x = event.offsetX * scaleX;
+            iMouse.y = (canvas.height - event.offsetY) * scaleY;
+            iMouse.clickX = event.offsetX * scaleX;
+            iMouse.clickY = (canvas.height - event.offsetY) * scaleY;
         });
     
         canvas.addEventListener("mouseup", () => {

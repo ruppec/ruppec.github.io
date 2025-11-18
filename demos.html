@@ -1,0 +1,19 @@
+---
+layout: default
+title: demos
+---
+
+<div class="demos-grid">
+  {% for demo in site.demos %}
+  <div class="demo-card">
+      <a href="{{ demo.url }}">
+        {% if demo.image %}
+        <img src="{{ site.baseurl }}/demos/{{ demo.image }}">
+        {% endif %}
+        <h3>{{ demo.title }}</h3>
+      </a>
+  </div>
+  {% endfor %}
+</div>
+
+More coming soon...
