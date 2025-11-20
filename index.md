@@ -33,7 +33,7 @@ Follow my progress on my [demos page!](demos)
 [Preprint.](https://arxiv.org/abs/2510.14272){:target="_blank"}
 
 Research on binomial edge ideals with faculty from [University of
-Nebraska-Lincoln](https://nebraskacommalg.github.io/RTG/conferences/reu.html) at Centro de Investigación en Matemáticas (CIMAT) in
+Nebraska-Lincoln](https://nebraskacommalg.github.io/RTG/conferences/reu.html){:target="_blank"} at Centro de Investigación en Matemáticas (CIMAT) in
 Mexico.
 Selected to present at Joint Mathematics Meetings.
 
