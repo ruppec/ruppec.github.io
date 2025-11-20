@@ -13,6 +13,7 @@ author:
 collections:
   demos:
     output: true
+    permalink: /demos/:path/
 
 
 plugins:
