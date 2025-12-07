@@ -11,16 +11,20 @@ image: "symmetric_cubics.png"
 <title>Symmetric Cubic Surfaces in S^3</title>
 </head>
 <body>
+  <div class="widget" style="width:400px;margin-left:5px">
   <h3 id="title">Symmetric Cubic Surfaces in S<sup>3</sup></h3>
   <div id="description">
     This is an immersive view of symmetric cubic surfaces in the S^3 geometry
     with all their (real) lines.
-    Based on Brazelton-Raman,
+    Based on <a href="https://tbrazel.github.io">Brazelton</a>-<a href="https://www.svraman.com">Raman</a>,
     <a href="https://arxiv.org/pdf/2410.09270.">https://arxiv.org/pdf/2410.09270.</a><br>
     Mini-map in the corner is the parameter space.<br>
-    Charlie Ruppe, Claudio Gómez-Gonzáles.
+    Credit to
+    <a href="https://ruppec.github.io">Charlie Ruppe</a>,
+    <a href="https://claudiojacobo.com">Claudio Gómez-Gonzáles</a>.
   </div>
-  <div id="info">
+  </div>
+  <div id="info" class="widget">
     WASD to move<br>
     Arrow keys to look around<br>
     PgDn and PgUp to roll<br>
@@ -30,11 +34,16 @@ image: "symmetric_cubics.png"
   </div>
   <div id="cubicform">
    <span id='a'></span> sum x_i^3 + <span id='b'></span> sum x_i^2 x_j + <span id='c'></span> sum x_i x_j x_k
-
   </div>
 <canvas id="canvas"></canvas>
 </body>
 <style>
+  .widget {
+      display: block;
+      background-color: rgba(50, 50, 60, 0.4);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
   #cubicform {
       position: absolute;
       bottom: 25px;
