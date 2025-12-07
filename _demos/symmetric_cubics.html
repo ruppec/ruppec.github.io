@@ -9,16 +9,20 @@ image: "symmetric_cubics.png"
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Symmetric Cubic Surfaces in S^3</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.26/dist/katex.min.css" integrity="sha384-Yj0iVBJl/hMrdI6WDlHlb7Zry94kimmN2aeCLsgAQThVyaQ1JPZvo1ob9uijD7SL" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.26/dist/katex.min.js" integrity="sha384-2WuUM/s2vwFJT/g//qyN5owxAP90NW9u+eST52Am1yDVVyku1+Dia3A+XcNqAFw+" crossorigin="anonymous"></script>
+
 </head>
 <body>
   <div class="widget" style="width:400px;margin-left:5px">
-  <h3 id="title">Symmetric Cubic Surfaces in S<sup>3</sup></h3>
+  <h3 id="title">Symmetric Cubic Surfaces in \(S^3\)</h3>
   <div id="description">
-    This is an immersive view of symmetric cubic surfaces in the S^3 geometry
+    This is an immersive view of symmetric cubic surfaces in the \(S^3\) geometry
     with all their (real) lines.
     Based on <a href="https://tbrazel.github.io">Brazelton</a>-<a href="https://www.svraman.com">Raman</a>,
     <a href="https://arxiv.org/pdf/2410.09270.">https://arxiv.org/pdf/2410.09270.</a><br>
     Mini-map in the corner is the parameter space.<br>
+    Colored light sources are for judging the distance and form only.
     Credit to
     <a href="https://ruppec.github.io">Charlie Ruppe</a>,
     <a href="https://claudiojacobo.com">Claudio Gómez-Gonzáles</a>.
@@ -33,7 +37,8 @@ image: "symmetric_cubics.png"
     Press Enter to fix orientation<br>
   </div>
   <div id="cubicform">
-   <span id='a'></span> sum x_i^3 + <span id='b'></span> sum x_i^2 x_j + <span id='c'></span> sum x_i x_j x_k
+   <span id='a'></span> \( \sum x_i^3 + \) <span id='b'></span> \(\sum x_i^2 x_j
+   + \)<span id='c'></span> \(\sum x_i x_j x_k = 0\)
   </div>
 <canvas id="canvas"></canvas>
 </body>
@@ -729,7 +734,6 @@ void main() {
     const result = math.qr(A);
     return result.Q;
   }
-
   function RGB(rgb) {
       return math.dotPow(rgb,2.2);
   }
@@ -738,7 +742,7 @@ void main() {
   let parameter_data = plane_rotation(0.1,2,0);
   const uniforms = {
       lights: [//TODO make the diffuseIntensity gamma-corrected
-          { pos: [.5,.5,.5,-.5], diffuseIntensity: RGB([.5,.5,.5]), specularIntensity: [1.,1.,1.]},
+          { pos: [1,1,1,-1], diffuseIntensity: RGB([.5,.5,.5]), specularIntensity: [1.,1.,1.]},
           { pos: [.5,.5,-.5,.5], diffuseIntensity: RGB([.7,.5,.5]), specularIntensity: ([1.,1.,1.])},
           { pos: [.5,-.5,.5,.5], diffuseIntensity: RGB([.5,.7,.5]), specularIntensity: ([1.,1.,1.])},
           { pos: [-.5,.5,.5,.5], diffuseIntensity: RGB([.5,.5,.7]), specularIntensity: ([1,1,1])},
@@ -783,30 +787,26 @@ void main() {
           parameter_data = math.multiply(plane_rotation(-data_step,1,2),parameter_data);
       if (keysPressed['l'])
           parameter_data = math.multiply(plane_rotation(-data_step,0,2),parameter_data);
-      if(keysPressed['Shift']) {
-          if (keysPressed['ArrowRight'])
-              camera_pose = math.multiply(plane_rotation(-rot_step,0,1),camera_pose);
-          if (keysPressed['ArrowLeft'])
-              camera_pose = math.multiply(plane_rotation(rot_step,0,1),camera_pose);
-      }
-      else {
-          if (keysPressed['w'])
-              camera_pose = math.multiply(plane_rotation(mov_step,2,3),camera_pose);
-          if (keysPressed['a'])
-              camera_pose = math.multiply(plane_rotation(-mov_step,3,0),camera_pose);
-          if (keysPressed['s'])
-              camera_pose = math.multiply(plane_rotation(-mov_step,2,3),camera_pose);
-          if (keysPressed['d'])
-              camera_pose = math.multiply(plane_rotation(mov_step,3,0),camera_pose);
-          if (keysPressed['ArrowRight'])
-              camera_pose = math.multiply(plane_rotation(rot_step,0,2),camera_pose);
-          if (keysPressed['ArrowLeft'])
-              camera_pose = math.multiply(plane_rotation(-rot_step,0,2),camera_pose);
-          if (keysPressed['ArrowUp'])
-              camera_pose = math.multiply(plane_rotation(rot_step,1,2),camera_pose);
-          if (keysPressed['ArrowDown'])
-              camera_pose = math.multiply(plane_rotation(-rot_step,1,2),camera_pose);
-      }
+      if (keysPressed['PageDown'])
+          camera_pose = math.multiply(plane_rotation(-rot_step,0,1),camera_pose);
+      if (keysPressed['PageUp'])
+          camera_pose = math.multiply(plane_rotation(rot_step,0,1),camera_pose);
+      if (keysPressed['w'])
+          camera_pose = math.multiply(plane_rotation(mov_step,2,3),camera_pose);
+      if (keysPressed['a'])
+          camera_pose = math.multiply(plane_rotation(-mov_step,3,0),camera_pose);
+      if (keysPressed['s'])
+          camera_pose = math.multiply(plane_rotation(-mov_step,2,3),camera_pose);
+      if (keysPressed['d'])
+          camera_pose = math.multiply(plane_rotation(mov_step,3,0),camera_pose);
+      if (keysPressed['ArrowRight'])
+          camera_pose = math.multiply(plane_rotation(rot_step,0,2),camera_pose);
+      if (keysPressed['ArrowLeft'])
+          camera_pose = math.multiply(plane_rotation(-rot_step,0,2),camera_pose);
+      if (keysPressed['ArrowUp'])
+          camera_pose = math.multiply(plane_rotation(rot_step,1,2),camera_pose);
+      if (keysPressed['ArrowDown'])
+          camera_pose = math.multiply(plane_rotation(-rot_step,1,2),camera_pose);
 
       uniforms.camera_pose = camera_pose.toArray().flat();
       uniforms.parameter_data = parameter_data.toArray().flat();

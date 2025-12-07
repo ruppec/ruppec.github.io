@@ -62,7 +62,6 @@ Configurations in Mesoscale Magnetic Dots'' Student Research and Internship
 Symposium. Carleton College, Northfield, MN, October 2023.
 
 ## Demos
-
 <div class="demos-list">
   {% for demo in site.demos %}
   <div class="demo-card">
