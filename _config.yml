@@ -20,9 +20,6 @@ plugins:
   - jektex
   - jekyll-remote-theme
 
-jektex:
-  cache_dir: ".jektex-cache"
-
 exclude:
   - ".jekyll-cache"
   - ".jektex-cache"

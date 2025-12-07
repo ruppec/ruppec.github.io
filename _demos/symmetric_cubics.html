@@ -1,0 +1,823 @@
+---
+title: Symmetric Cubic Surfaces in S^3
+date: 2025-11-05
+image: "symmetric_cubics.png"
+---
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Symmetric Cubic Surfaces in S^3</title>
+</head>
+<body>
+  <h3 id="title">Symmetric Cubic Surfaces in S<sup>3</sup></h3>
+  <div id="description">
+    This is an immersive view of symmetric cubic surfaces in the S^3 geometry
+    with all their (real) lines.
+    Based on Brazelton-Raman,
+    <a href="https://arxiv.org/pdf/2410.09270.">https://arxiv.org/pdf/2410.09270.</a><br>
+    Mini-map in the corner is the parameter space.
+  </div>
+  <div id="info">
+    WASD to move<br>
+    Arrow keys to look around<br>
+    PgDn and PgUp to roll<br>
+    HJKL to adjust coefficients<br>
+    Hold Space to speed up<br>
+    Press Enter to fix orientation<br>
+  </div>
+  <div id="cubicform">
+   <span id='a'></span> sum x_i^3 + <span id='b'></span> sum x_i^2 x_j + <span id='c'></span> sum x_i x_j x_k
+
+  </div>
+<canvas id="canvas"></canvas>
+</body>
+<style>
+  #cubicform {
+      position: absolute;
+      bottom: 25px;
+      left: 30px;
+  }
+  #description {
+      margin: 5px;
+      max-width: 500px;
+  }
+  #info {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      margin: 0;
+  }
+
+  #title {
+      margin: 5px;
+  }
+  body {
+      margin: 0;
+  }
+  canvas {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: -1;
+      display: block;
+      width: 100vw;
+      height: 100vh;
+  }
+</style>
+
+<script src="/lib/twgl-full.min.js"></script>
+<script src="/lib/gl-matrix-min.js"></script>
+<script src="/lib/math.js"></script>
+
+<script id="vs" type="text/plain">
+  #version 300 es
+  in vec4 position;
+  void main() {
+      gl_Position = position;
+  }
+</script>
+
+<script id="fs" type="text/plain">
+#version 300 es
+precision mediump float;
+
+uniform vec2 iResolution;
+uniform float iTime;
+
+#define R_scene 8.0
+#define R_line 5.0e-3
+#define T_min 1e-1
+#define SHINY 3e2
+
+#define GAMMA_CORRECTION
+#define gamma2lin(rgb) pow(rgb, vec3(2.2))
+#define lin2gamma(rgb) pow(rgb, vec3(1./2.2))
+#define RGB(r,g,b) gamma2lin(vec3(r,g,b))
+
+ 
+#define S3
+
+
+const float PI = 3.14159;
+
+float cubic(vec4 P);
+vec4 grad_cubic(vec4 P);
+vec4 ray_coefficients(vec4 P, vec4 V);
+vec4 intersect_along_ray(vec4 P, vec4 V);
+float distance_from_line(vec4 P, vec4 A, vec4 B);
+
+
+struct Ray {
+    vec4 o;
+    vec4 d;
+};
+
+struct Light {
+    vec4 pos;
+    vec3 diffuseIntensity;
+    vec3 specularIntensity;
+};
+
+//returns direction from a to b in S3
+vec4 direction(vec4 a, vec4 b) {
+    return normalize(b - dot(a,b)*a);
+}
+
+vec3 phong_to_infinity(vec4 P, vec4 normal, vec4 camera_dir, Light light, vec3 diffuse_col);
+float traceLight(Light light, vec4 P, vec4 V);
+
+float dist(vec4 x, vec4 y) {
+    #ifdef S3
+    return acos(dot(x,y));
+    #else
+    return distance(x,y);
+    #endif
+}
+
+float sq( float x )
+{
+    return x*x;
+}
+
+float cbrt( float x )
+{
+	return sign(x) * pow( abs(x), 1./3.);
+}
+
+int solve_cubic(vec4 coeffs, out float roots[3])
+{
+    float A = coeffs.x, B = coeffs.y, C = coeffs.z, D = coeffs.w;
+    if (abs(A) < 1e-12) {
+        if (abs(B) < 1e-12) {
+            if (abs(C) < 1e-12)
+                return 0;
+            roots[0] = -D / C;
+            return 1;
+        }
+        float disc = C*C - 4.0*B*D;
+        if (disc < 0.) return 0;
+        if (disc == 0.) {
+            roots[0] = -0.5 * C / B;
+            return 1;
+        }
+        float sqrt_disc = sqrt(disc);
+        roots[0] = (-C - sqrt_disc) / (2. * B);
+        roots[1] = (-C + sqrt_disc) / (2. * B);
+        return 2;
+    }
+    
+    // normalize to monic
+    float p = B / A;
+    float q = C / A;
+    float r = D / A;
+    
+    // depress
+    float p3 = p / 3.;
+    float u = q - p * p3;
+    float v = r - p3 * (q - 2. * p3 * p3);
+    
+    // Discriminant
+    float v2 = v * 0.5;
+    float u3 = u / 3.;
+    float D3 = v2*v2 + u3*u3*u3;
+    
+    if (D3 > 0.0) {
+        // One real root
+        float sqrt_D = sqrt(D3);
+        float A1 = cbrt(-v2 + sqrt_D);
+        float B1 = cbrt(-v2 - sqrt_D);
+        roots[0] = A1 + B1 - p3;
+        return 1;
+    } else if (D3 == 0.0) {
+        // Multiple roots
+        float B1 = cbrt(-v2);
+        roots[0] = 2.0 * B1 - p3;
+        roots[1] = -B1 - p3;
+        return 2; // second root is repeated
+    } else {
+        // Three real roots
+        float rho = sqrt(-u3*u3*u3);
+        float theta = acos(-v2 / rho) / 3.0;
+        float rho13 = 2.0 * cbrt(rho);
+        roots[0] = rho13 * cos(theta) - p3;
+        roots[1] = rho13 * cos(theta - 2.0943951023931953) - p3;
+        roots[2] = rho13 * cos(theta + 2.0943951023931953) - p3;
+        return 3;
+    }
+}
+
+vec3 phong(//material properties
+           vec3 diffuseReflectance, vec3 specularReflectance,
+           float shininess,
+           //light properties
+           vec3 diffuseIntensity, vec3 specularIntensity,
+           //directions
+           vec4 normalDir, vec4 cameraDir, vec4 lightDir)
+{
+    #ifdef GAMMA_CORRECTION
+    //diffuseIntensity = gamma2lin(diffuseIntensity);
+    //specularIntensity = gamma2lin(specularIntensity);
+    #endif
+    vec4 reflectDir = -reflect(lightDir,normalDir);
+    vec3 diffuseTerm = diffuseReflectance * diffuseIntensity
+                        * max(dot(normalDir, lightDir), 0.);
+    vec3 specularTerm = specularReflectance * specularIntensity
+                        * pow(max(dot(reflectDir, cameraDir), 0.), shininess);                   
+    return diffuseTerm + specularTerm;
+}
+
+//TODO we are specular highlight is wrong
+//TODO we are getting some artifacts in R3
+//TODO create keypress event that sets current position in S3
+// as the focus point for the stereographic projection to R3
+//TODO make switching from S3 to R3 use stereographic projection so we keep looking at the same features
+// maybe we even implement a split-screen view? is this possible?
+//TODO implement coordinates on the surface for lightmap/texturing
+//TODO implement this on WebGL directly for customization
+//TODO make lights appear at antipodal point as well, and customize
+// the shadowtracing code to do the single correct ray trace
+
+/* Going to be uniforms */
+uniform mat4 camera_pose;
+uniform mat4 parameter_data;
+mat3 coeff_data;
+vec2 c2o_lines;
+vec2 c2e_lines;
+
+// visualizing cubic surfaces of the form
+// a sum X_i^3 + b sum X_i^2 X_j + c sum X_i X_j X_k
+// starting parameters: (a:b:c) = (-sin(0.1):0:cos(0.1))
+// based on Brazelton-Raman, https://arxiv.org/pdf/2410.09270
+
+vec4 flow(vec4 P, float t, vec4 V) {
+    #ifdef S3
+    return P * cos(t) + V * sin(t);
+    #else
+    return P + t * V;
+    #endif
+}
+vec4 flow(Ray r, float t) {return flow(r.o,t,r.d);}
+
+//TODO remove
+/*
+Light[] lights = Light[](
+    Light(vec4(1,1,1,-1), RGB(.5,.5,.5), vec3(1,0.5,0.5)),
+    Light(vec4(1,1,-1,1), RGB(.7,.5,.5), vec3(0.75,1.0,0.5)),
+    Light(vec4(1,-1,1,1), RGB(.5,.7,.5), vec3(0.5,1,1)),
+    Light(vec4(-1,1,1,1), RGB(.5,.5,.7), vec3(0.75,0.5,1))
+);
+*/
+uniform Light[4] lights;
+
+//rotates the i,j axis-spanned plane
+mat4 plane_rotation(float t, int i, int j) {
+    mat4 R = mat4(1);
+    R[i][i] = cos(t);
+    R[i][j] = sin(t);
+    R[j][i] = -sin(t);
+    R[j][j] = cos(t);
+    return R;
+}
+
+// moves along the ith axis in the geometry
+mat4 movement(float t, int i) {
+    #ifdef S3
+    return plane_rotation(t,3,i);
+    #else
+    mat4 M = mat4(1);
+    M[3] += M[i]*t;
+    return M;
+    #endif
+}
+
+void orthonormalize(inout mat4 Q) {
+    #ifdef S3
+    Q[3] = normalize(Q[3]);
+    Q[2] = normalize(Q[2] - dot(Q[2],Q[3])*Q[3]);
+    Q[1] = normalize(Q[1] - dot(Q[1],Q[3])*Q[3] - dot(Q[1],Q[2])*Q[2]);
+    Q[0] = normalize(Q[0] - dot(Q[0],Q[3])*Q[3] - dot(Q[0],Q[2])*Q[2] - dot(Q[0],Q[1])*Q[1]);
+    #endif
+}
+
+mat3 orthonormalize(mat3 Q) {
+    vec3 c2 = Q[2];
+    vec3 c0 = Q[0];
+    c2 = normalize(c2);
+    c0 = normalize(c0 - dot(c0, c2) * c2);
+    return mat3(c0,cross(c2,c0),c2);
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    //mat4 camera_pose = plane_rotation(-0.4,0,2)*plane_rotation(-0.4,1,2);
+    //camera_pose[3] = vec4(3,3,6,1);
+    //orthonormalize(camera_pose);
+    //parameter_data = plane_rotation(0.1,2,0);
+
+    // load pose data from the buffer
+    vec4 f1 = camera_pose[0];
+    vec4 f2 = camera_pose[1];
+    vec4 f3 = camera_pose[2];
+    vec4 camera_position = camera_pose[3];
+    //camera_position = normalize(camera_position);
+    coeff_data[0] = parameter_data[0].xyz;
+    coeff_data[1] = parameter_data[1].xyz;
+    coeff_data[2] = parameter_data[2].xyz;
+
+    
+    // draw mini-map
+    float block = min(iResolution.x,iResolution.y)/12.;
+    if ( block < fragCoord.x && fragCoord.x < 5.*block && block < fragCoord.y && fragCoord.y < 5.*block) {
+        // ray trace from (0,0,3) to unit sphere at the origin
+        vec2 uv = 2.*(fragCoord - vec2(block))/vec2(4.*block)-vec2(1.);
+        vec3 pos = vec3(0,0,3);
+        vec3 dir = normalize(vec3(uv,-2.5));
+        
+        // determinant of ray intersecting unit sphere,
+        // which is a double cover of the parameter space 
+        float D = -8.*sq(dir.x) - 8.*sq(dir.y) + sq(dir.z);
+        // if we hit the sphere
+        if ( D > 0. ) {
+            float t = (-3.*dir.z - sqrt(D))/sq(length(dir));
+            vec3 Q = pos + t * dir;
+            
+            if( Q.z > 0.999 )
+                fragColor = vec4(0,0.8,0.8,1);
+            else if( Q.z > 0.998 )
+                fragColor = vec4(0,0,0,1);
+            else {
+                // rotate sphere into position to reflect current parameters 
+                Q = coeff_data * Q;
+                
+                // reduced discriminant gives branch points
+                float red_disc = (Q.x+3.*Q.y+Q.z)*(3.*Q.x-3.*Q.y+Q.z)*(3.*Q.x+Q.y-Q.z)*(9.*Q.x*Q.x*Q.x + 9.*Q.x*Q.x*Q.y - 9.*Q.x*Q.y*Q.y + 7.*Q.y*Q.y*Q.y - 3.*Q.x*Q.x*Q.z - 6.*Q.x*Q.y*Q.z - 3.*Q.y*Q.y*Q.z + 4.*Q.x*Q.z*Q.z);
+                float r = 1./(1.+sqrt(abs(red_disc)));
+                float alpha = -(9.*Q.x*Q.x*Q.x + 9.*Q.x*Q.x*Q.y - 9.*Q.x*Q.y*Q.y + 7.*Q.y*Q.y*Q.y - 3.*Q.x*Q.x*Q.z - 6.*Q.x*Q.y*Q.z - 3.*Q.y*Q.y*Q.z + 4.*Q.x*Q.z*Q.z) * (3.*Q.x + Q.y - Q.z);
+                float beta = -(3.*Q.x + Q.y - Q.z)*(Q.x + 3.*Q.y + Q.z);
+                float rr = sq(r);
+                float rrr = sq(rr);
+                if ( alpha > 0. && beta > 0. ) // region with 27 real lines
+                    fragColor = vec4(r,rr,rrr,1);
+                else if ( beta > 0. ) // region with 3 real lines
+                    fragColor = vec4(rr,rrr,r,1);
+                else // region with 3 real lines
+                    fragColor = vec4(rr,rr,rr,1);
+                // note: beta > 0 is necessary for alpha > 0
+            }
+            return;
+        }
+        // border of mini-map
+        else if ( D > -0.1 ) { 
+            fragColor = vec4(1,1,1,1);
+            return;
+        }
+    }
+    
+    // solve for lines (via Brazelton-Raman formulas)
+    int lines = 3;
+    float A = coeff_data[2][0];
+    float B = coeff_data[2][1];
+    float C = coeff_data[2][2];
+    float alpha = -(9.*A*A*A + 9.*A*A*B - 9.*A*B*B + 7.*B*B*B - 3.*A*A*C - 6.*A*B*C - 3.*B*B*C + 4.*A*C*C) * (3.*A + B - C);    
+    if ( alpha > 0. ) {
+        lines = 27;
+        float beta = -(3.*A + B - C)*(A + 3.*B + C);
+
+        float temp1 = 9.*A*A - B*B - (3.*A-B)*C;
+        float temp2 = 6.*A*B + 2.*B*B - 3.*(A+B)*C + C*C;
+        c2o_lines = vec2( -(temp1+sqrt(alpha)), -(temp1-sqrt(alpha)) )/temp2;
+        
+        temp1 = A-B-C+sqrt(beta);
+        temp2 = (9.*A*A + 6.*A*B + B*B - 2.*(3.*A+B)*C + C*C) + (3.*A - 3.*B + C) * sqrt(beta);
+        c2e_lines = vec2( temp1/(2.*(A+B)), temp2/(2.*sqrt(alpha)) );    
+    }
+    
+    // set up ray for main scene
+    vec2 uv = fragCoord/iResolution.xy;
+    float u = iResolution.x/iResolution.y*(2.*uv.x-1.);
+    float v = 2.*uv.y-1.;
+    vec4 dir = normalize(u*f1 + v*f2 - f3);
+    vec3 col = RGB(1,1,1);
+    vec4 P = intersect_along_ray(camera_position,dir);
+    
+    #ifdef S3
+    //draw the light-sources
+    float bestT = dist(camera_position, P);
+    int bestLight=-1;
+    for(int i=0; i< lights.length(); i++) {
+        float t = traceLight(lights[i], camera_position, dir);
+        if(t < -0.5) continue;
+        if(t < bestT) {
+            t = bestT;
+            bestLight = i;
+            
+        }
+    }
+    if(bestLight >=0) {
+        fragColor = vec4(lights[bestLight].specularIntensity,1);
+            return;
+    }
+    #endif
+    
+    // if we hit the cubic surface
+    if ( length(P) > 0. ) {
+        float r = length(P);
+        P = normalize(P);//reduce any errors from tracing
+        
+        #ifdef S3
+        vec4 camera_dir = direction(P,camera_position);
+        #else
+        vec4 camera_dir = -dir;
+        #endif
+
+        vec4 normal = normalize(grad_cubic(P));
+        // flip normal if its facing away from camera
+        if (dot(normal, camera_dir) < 0.0) {
+            normal = -normal;
+        }
+        
+
+        
+        // plot S4/D8 lines
+        float dist = min(min(
+            distance_from_line(P,vec4(1,-1,0,0),vec4(0,0,1,-1)),
+            distance_from_line(P.xzyw,vec4(1,-1,0,0),vec4(0,0,1,-1))),
+            distance_from_line(P.xwzy,vec4(1,-1,0,0),vec4(0,0,1,-1)));
+        dist -= R_line/r;
+                   
+        float fw = fwidth(dist);
+        float alpha = 1.0 - smoothstep(0.0, fw, dist);
+        //col = mix(col, vec3(.1,.9,.9), alpha);
+        if (dist < 0.)
+            col = vec3(.1,.9,.9);
+        // plot S4/<(1 2)> lines 
+        if ( lines == 27 && 
+             ( distance_from_line(P.xyzw,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.zyxw,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.wyzx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.xzyw,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.xwzy,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.xywz,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.wyxz,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.xwyz,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.zywx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.zwxy,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.wzyx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r 
+            || distance_from_line(P.yzwx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r ))
+            col = RGB(.9,0.1,.9);
+
+                                                                               
+        // plot S4/<(1 2)(3 4)> lines
+        if ( lines == 27 && 
+             ( distance_from_line(P.xyzw,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r 
+            || distance_from_line(P.xywz,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r //
+            || distance_from_line(P.xzyw,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r 
+            || distance_from_line(P.xwyz,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r 
+            || distance_from_line(P.xzwy,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r 
+            || distance_from_line(P.xwzy,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r 
+            || distance_from_line(P.yzxw,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r //
+            || distance_from_line(P.ywxz,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r 
+            || distance_from_line(P.zyxw,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r 
+            || distance_from_line(P.wyxz,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r //
+            || distance_from_line(P.zwxy,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r //
+            || distance_from_line(P.wzxy,vec4(vec2(c2e_lines.x),1,1),vec4(1,-1,vec2(c2e_lines.y,-c2e_lines.y))) < R_line/r )) //
+            col = RGB(.9,.9,.1);
+            
+        vec3 reflectance=col;
+        //reflectance=materChrome.ambientReflectance;
+        col = 0.03*reflectance;//ambient light
+        for(int i = 0; i < lights.length(); i++) {
+            col += phong_to_infinity(P, normal, camera_dir, lights[i], reflectance)/1.2;
+        }
+    }
+
+    #ifdef GAMMA_CORRECTION
+    //gamma correction
+    col = lin2gamma(col);
+    #endif
+    // output to screen
+    fragColor = vec4(col,1.0);
+}
+
+float traceLight(Light light, vec4 P, vec4 V) {
+    if(cubic(light.pos)*cubic(P) > 0.) light.pos *=-1.;
+    // TODO optimize this
+    light.pos = normalize(light.pos);
+    P = normalize(P);
+    V = direction(P,V);
+    
+    vec2 AB = vec2(2.*dot(P,light.pos), 2.*dot(V,light.pos));
+    float K = 1. + dot(light.pos,light.pos) - 0.0005;
+    float R = length(AB); 
+    
+    float t = atan(AB[1],AB[0]) - acos(K/R) + PI;
+    return t;
+}
+
+
+float cubic(float X, float Y, float Z, float W)
+{
+    return coeff_data[2][0] * (X*X*X + Y*Y*Y + Z*Z*Z + W*W*W) 
+         + coeff_data[2][1] * (X*X*Y + X*X*Z + X*X*W + Y*Y*X + Y*Y*Z + Y*Y*W + Z*Z*X + Z*Z*Y + Z*Z*W + W*W*X + W*W*Y + W*W*Z) 
+         + coeff_data[2][2] * (X*Y*Z + X*Y*W + X*Z*W + Y*Z*W);
+}
+
+float cubic(vec4 Q)
+{
+    return cubic(Q.x,Q.y,Q.z,Q.w);
+}
+
+vec4 grad_cubic(float X, float Y, float Z, float W)
+{
+    return vec4(
+        coeff_data[2][0] * (3.*X*X) 
+            + coeff_data[2][1] * (2.*X*Y + 2.*X*Z + 2.*X*W + Y*Y + Z*Z + W*W) 
+            + coeff_data[2][2] * (Y*Z + Y*W + Z*W),
+        coeff_data[2][0] * (3.*Y*Y) 
+            + coeff_data[2][1] * (2.*Y*Z + 2.*Y*W + 2.*Y*X + Z*Z + W*W + X*X) 
+            + coeff_data[2][2] * (Z*W + Z*X + W*X),
+        coeff_data[2][0] * (3.*Z*Z) 
+            + coeff_data[2][1] * (2.*Z*W + 2.*Z*X + 2.*Z*Y + W*W + X*X + Y*Y) 
+            + coeff_data[2][2] * (W*X + W*Y + X*Y),
+        coeff_data[2][0] * (3.*W*W) 
+            + coeff_data[2][1] * (2.*W*X + 2.*W*Y + 2.*W*Z + X*X + Y*Y + Z*Z) 
+            + coeff_data[2][2] * (X*Y + X*Z + Y*Z)
+    );
+}
+
+vec4 grad_cubic(vec4 Q)
+{
+    return grad_cubic(Q.x,Q.y,Q.z,Q.w);
+}
+
+vec4 ray_coefficients(vec4 P, vec4 V)
+{
+    float D = cubic(P);
+    float A = cubic(V);
+    float F1 = cubic(P + V);
+    float F2 = cubic(P - V);
+    float B = (F1 + F2)/2. - D;
+    float C = (F1 - F2)/2. - A;
+    return vec4(A,B,C,D);
+}
+
+float sdfCubic(vec4 Q)
+{
+    return cubic(Q)/length(grad_cubic(Q));
+}
+
+const float EPSILON = 5e-7;
+const float mindist = 100.*EPSILON;
+const float MAX_DISTANCE = 2.*PI;
+const int MAX_STEPS = 256;
+float marchRay(Ray r) {
+    float t=mindist;
+    float sd = sdfCubic(flow(r,t));
+    float s = sign(sd);//are we already within the object?
+    
+    for(int i = 0; i<MAX_STEPS; i++) {
+        sd = s*sdfCubic(flow(r,t));
+        if(abs(sd) < EPSILON) break;
+        if(t > MAX_DISTANCE) {
+            break;
+        }
+        t+=sd;
+    }
+    return t;
+}
+
+#ifdef S3
+vec4 intersect_along_ray(vec4 P, vec4 V)
+{
+    //P = normalize(P);
+    //V = normalize(V - dot(P,V) * P);
+    Ray r = Ray(P,V);
+    float t = marchRay(r);
+    return flow(r,t);
+}
+#else 
+vec4 intersect_along_ray(vec4 P, vec4 V)
+{
+    float roots[3];
+    vec4 coeffs = ray_coefficients(P, V);
+    int num_roots = solve_cubic(coeffs, roots);
+    float dist = 1e6;
+    int index = -1;
+    for ( int i = 0; i < num_roots; i++ ) {
+        if ( T_min < roots[i] && roots[i] < dist && length(P+roots[i]*V) < R_scene ) {
+            index = i;
+            dist = roots[i];
+        }
+    }
+    if ( index >= 0 )
+        return flow(P,roots[index],V);
+    return vec4(0);
+}
+#endif
+
+float distance_from_line(vec4 P, vec4 A, vec4 B)
+{
+    P = normalize(P);
+    A = normalize(A);
+    B = normalize(B);
+    vec4 V = normalize(B - dot(A,B)*A);
+    return acos(length( vec2(dot(V,P),dot(A,P)) ));
+}
+
+#ifdef S3
+vec3 phong_to_infinity(vec4 P, vec4 normal, vec4 camera_dir,
+                       Light light, vec3 object_col) {
+    vec4 light_pos = light.pos;
+    
+    //if the light source is on the other side, we want to consider its antipode
+    if(cubic(P+normal*0.000001)*cubic(light_pos) < 0.) light_pos *=-1.;
+    light_pos = normalize(light_pos);
+    vec4 light_dir = direction(P,light_pos);
+    vec4 reflect_dir = -reflect(light_dir,normal);
+    
+    
+    vec4 Q = intersect_along_ray(P+normal*0.05, light_dir);
+    
+    float lightIntensity = 1.;
+    if ( dist(P,Q) < dist(P,light_pos)) {
+        light.diffuseIntensity*=0.;
+        light.specularIntensity*=0.;
+    }
+    //return phong(materChrome, light, normal,camera_dir,light_dir);
+    return phong(object_col, vec3(1), SHINY,
+                 light.diffuseIntensity, light.specularIntensity,
+                 normal, camera_dir, light_dir);
+}
+#else
+vec3 phong_to_infinity(vec4 P, vec4 normal, vec4 camera_dir,
+Light light, vec3 diffuse_col) {
+    vec3 specular_col = vec3(1);
+    vec4 light_dir = -direction(vec4(0,0,0,1), light.pos);
+    
+    vec3 col = vec3(0);
+    light_dir = normalize(light_dir);
+    vec4 reflect_dir = -reflect(light_dir,normal);
+    vec4 Q = intersect_along_ray(P, light_dir);
+    if ( Q == vec4(0) ) {
+        col += diffuse_col * max(dot(normal, light_dir),0.);
+        col += specular_col * pow( max(dot(reflect_dir, camera_dir), 0.), SHINY);
+    }
+    return phong(diffuse_col, vec3(1), SHINY,
+                 light.diffuseIntensity, light.specularIntensity,
+                 normal, camera_dir, light_dir);
+}
+#endif
+
+out vec4 FragColor;
+                                                                   
+void main() {
+  mainImage(FragColor, gl_FragCoord.xy);
+}
+
+</script>
+
+<script>
+  const config = {hidpi: false}
+
+  const keysPressed = {}; // Object to track key states
+
+  document.addEventListener('keydown', (event) => {
+      keysPressed[event.key] = true;
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+          event.preventDefault(); // stop default scrolling behavior
+      }
+  }, false);
+
+  document.addEventListener('keyup', (event) => {
+      keysPressed[event.key] = false;
+  }, false);
+
+  const gl = document.getElementById("canvas").getContext("webgl2");
+  const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
+ 
+  const arrays = {
+      position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
+  };
+  const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+
+  function plane_rotation(t, i, j) {
+      const c = Math.cos(t);
+      const s = Math.sin(t);
+      
+      let G = math.identity(4);
+      G.set([i, i], c);
+      G.set([i, j], s);
+      G.set([j, i], -s);
+      G.set([j, j], c);
+
+      return G;
+  }
+
+  function orthonormalize(A) {
+    const result = math.qr(A);
+    return result.Q;
+  }
+
+  function RGB(rgb) {
+      return math.dotPow(rgb,2.2);
+  }
+  let camera_pose = math.multiply(plane_rotation(-0.4,0,2),
+                                  plane_rotation(-0.4,1,2));
+  let parameter_data = plane_rotation(0.1,2,0);
+  const uniforms = {
+      lights: [//TODO make the diffuseIntensity gamma-corrected
+          { pos: [.5,.5,.5,-.5], diffuseIntensity: RGB([.5,.5,.5]), specularIntensity: [1.,1.,1.]},
+          { pos: [.5,.5,-.5,.5], diffuseIntensity: RGB([.7,.5,.5]), specularIntensity: ([1.,1.,1.])},
+          { pos: [.5,-.5,.5,.5], diffuseIntensity: RGB([.5,.7,.5]), specularIntensity: ([1.,1.,1.])},
+          { pos: [-.5,.5,.5,.5], diffuseIntensity: RGB([.5,.5,.7]), specularIntensity: ([1,1,1])},
+      ],
+      camera_pose: camera_pose.toArray().flat(),
+      parameter_data: parameter_data.toArray().flat(),
+  };
+  
+  function render(time) {
+      if(config.hidpi)
+          twgl.resizeCanvasToDisplaySize(gl.canvas,window.devicePixelRatio);
+      else
+          twgl.resizeCanvasToDisplaySize(gl.canvas);
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+ 
+  
+      uniforms.iTime = time * 0.001;
+      uniforms.iResolution = [gl.canvas.width, gl.canvas.height];
+      //mat4 camera_pose = plane_rotation(-0.4,0,2)*plane_rotation(-0.4,1,2);
+      //camera_pose[3] = vec4(3,3,6,1);
+      //orthonormalize(camera_pose);
+      //parameter_data = plane_rotation(0.1,2,0);
+
+      //mat4 camera_pose;
+      let mov_step = 0.01;
+      let rot_step = 0.03;
+      let data_step = 0.001;
+      if(keysPressed[' ']) {
+          mov_step *= 5.;
+          rot_step *= 2.;
+          data_step *= 5.;
+      }
+      if(keysPressed['Enter']) {
+          parameter_data = orthonormalize(parameter_data);
+          camera_pose = orthonormalize(camera_pose);
+      }
+      if (keysPressed['h'])
+          parameter_data = math.multiply(plane_rotation(data_step,0,2),parameter_data);
+      if (keysPressed['j'])
+          parameter_data = math.multiply(plane_rotation(data_step,1,2),parameter_data);
+      if (keysPressed['k'])
+          parameter_data = math.multiply(plane_rotation(-data_step,1,2),parameter_data);
+      if (keysPressed['l'])
+          parameter_data = math.multiply(plane_rotation(-data_step,0,2),parameter_data);
+      if(keysPressed['Shift']) {
+          if (keysPressed['ArrowRight'])
+              camera_pose = math.multiply(plane_rotation(-rot_step,0,1),camera_pose);
+          if (keysPressed['ArrowLeft'])
+              camera_pose = math.multiply(plane_rotation(rot_step,0,1),camera_pose);
+      }
+      else {
+          if (keysPressed['w'])
+              camera_pose = math.multiply(plane_rotation(mov_step,2,3),camera_pose);
+          if (keysPressed['a'])
+              camera_pose = math.multiply(plane_rotation(-mov_step,3,0),camera_pose);
+          if (keysPressed['s'])
+              camera_pose = math.multiply(plane_rotation(-mov_step,2,3),camera_pose);
+          if (keysPressed['d'])
+              camera_pose = math.multiply(plane_rotation(mov_step,3,0),camera_pose);
+          if (keysPressed['ArrowRight'])
+              camera_pose = math.multiply(plane_rotation(rot_step,0,2),camera_pose);
+          if (keysPressed['ArrowLeft'])
+              camera_pose = math.multiply(plane_rotation(-rot_step,0,2),camera_pose);
+          if (keysPressed['ArrowUp'])
+              camera_pose = math.multiply(plane_rotation(rot_step,1,2),camera_pose);
+          if (keysPressed['ArrowDown'])
+              camera_pose = math.multiply(plane_rotation(-rot_step,1,2),camera_pose);
+      }
+
+      uniforms.camera_pose = camera_pose.toArray().flat();
+      uniforms.parameter_data = parameter_data.toArray().flat();
+      document.getElementById('a').textContent=parameter_data.get([2,0]).toFixed(3);
+      document.getElementById('b').textContent=parameter_data.get([2,1]).toFixed(3);
+      document.getElementById('c').textContent=parameter_data.get([2,2]).toFixed(3);
+
+      //mat4 parameter_data;
+      //vec2 c2o_lines;
+      uniforms.c2o_lines = [1,1];
+      //vec2 c2e_lines;
+      uniforms.c2e_lines = [1,-1];
+
+ 
+      gl.useProgram(programInfo.program);
+      twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+      twgl.setUniforms(programInfo, uniforms);
+      twgl.drawBufferInfo(gl, bufferInfo);
+      
+      requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+</script>
+</html>

@@ -2,6 +2,7 @@
 layout: shadertoy
 title: "Clebsch Cubic in S^3"
 description: "An immersive view of the double cover of the clebsch cubic surface in the 3-sphere."
+date: 2025-11-19
 acknowledgement: "Thanks to [Steve Trettel](https://stevejtrettel.site){:target=\"_blank\"} and [Claudio Gómez-Gonzáles](https://claudiojacobo.com){:target=\"_blank\"} for inspiration."
 image: "clebschcubic.png"
 
