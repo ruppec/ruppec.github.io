@@ -34,7 +34,7 @@ image: "symmetric_cubics.png"
     WASD to move<br>
     Arrow keys to look around<br>
     PgDn and PgUp to roll<br>
-    HJKL to adjust coefficients<br>
+    IJKL to adjust coefficients<br>
     Hold Space to speed up<br>
     Press Enter to fix orientation<br>
   </div>
@@ -781,12 +781,12 @@ void main() {
           parameter_data = orthonormalize(parameter_data);
           camera_pose = orthonormalize(camera_pose);
       }
-      if (keysPressed['h'])
-          parameter_data = math.multiply(plane_rotation(data_step,0,2),parameter_data);
-      if (keysPressed['j'])
-          parameter_data = math.multiply(plane_rotation(data_step,1,2),parameter_data);
-      if (keysPressed['k'])
+      if (keysPressed['i'])
           parameter_data = math.multiply(plane_rotation(-data_step,1,2),parameter_data);
+      if (keysPressed['j'])
+          parameter_data = math.multiply(plane_rotation(data_step,0,2),parameter_data);
+      if (keysPressed['k'])
+          parameter_data = math.multiply(plane_rotation(data_step,1,2),parameter_data);
       if (keysPressed['l'])
           parameter_data = math.multiply(plane_rotation(-data_step,0,2),parameter_data);
       if (keysPressed['PageDown'])
