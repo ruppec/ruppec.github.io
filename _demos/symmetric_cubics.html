@@ -470,13 +470,14 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         // plot S4/<(1 2)> lines 
         if ( lines == 27 && 
              ( distance_from_line(P.xyzw,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.xywz,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.xzyw,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.xzwy,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.xwzy,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            || distance_from_line(P.xwyz,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
             || distance_from_line(P.zyxw,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
             || distance_from_line(P.wyzx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
-            || distance_from_line(P.xzyw,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
-            || distance_from_line(P.xwzy,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
-            || distance_from_line(P.xywz,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
             || distance_from_line(P.wyxz,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
-            || distance_from_line(P.xwyz,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
             || distance_from_line(P.zywx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
             || distance_from_line(P.zwxy,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
             || distance_from_line(P.wzyx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r 
