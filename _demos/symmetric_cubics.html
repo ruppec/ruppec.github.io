@@ -454,9 +454,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         if (dot(normal, camera_dir) < 0.0) {
             normal = -normal;
         }
-        
 
-        
         // plot S4/D8 lines
         float dist = min(min(
             distance_from_line(P,vec4(1,-1,0,0),vec4(0,0,1,-1)),
@@ -506,9 +504,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         //reflectance=materChrome.ambientReflectance;
         col = 0.03*reflectance;//ambient light
         for(int i = 0; i < lights.length(); i++) {
-            col += phong_to_infinity(P, normal, camera_dir, lights[i], reflectance)/1.2;
+            col += phong_to_infinity(P, normal, camera_position, lights[i], reflectance)/1.2;
         }
     }
+
 
     #ifdef GAMMA_CORRECTION
     //gamma correction
@@ -586,7 +585,7 @@ float sdfCubic(vec4 Q)
 }
 
 const float EPSILON = 5e-7;
-const float mindist = 100.*EPSILON;
+const float mindist = 10.*EPSILON;
 const float MAX_DISTANCE = 2.*PI;
 const int MAX_STEPS = 256;
 float marchRay(Ray r) {
@@ -597,11 +596,14 @@ float marchRay(Ray r) {
     for(int i = 0; i<MAX_STEPS; i++) {
         sd = s*sdfCubic(flow(r,t));
         if(abs(sd) < EPSILON) break;
-        if(t > MAX_DISTANCE) {
-            break;
-        }
+        if(t > MAX_DISTANCE) break;
         t+=sd;
     }
+    /*
+    for(int i=0; i<10; i++) {
+        t += EPSILON/10.;
+    }
+    */
     return t;
 }
 
@@ -644,28 +646,32 @@ float distance_from_line(vec4 P, vec4 A, vec4 B)
 }
 
 #ifdef S3
-vec3 phong_to_infinity(vec4 P, vec4 normal, vec4 camera_dir,
+vec3 phong_to_infinity(vec4 P, vec4 normal, vec4 camera_position,
                        Light light, vec3 object_col) {
     vec4 light_pos = light.pos;
-    
     //if the light source is on the other side, we want to consider its antipode
-    if(cubic(P+normal*0.000001)*cubic(light_pos) < 0.) light_pos *=-1.;
+    // TODO this check should happen earlier maybe?
+    if(cubic(camera_position)*cubic(light_pos) < 0.) light_pos *=-1.;
+    
     light_pos = normalize(light_pos);
+    vec4 camera_dir = direction(P, camera_position);
     vec4 light_dir = direction(P,light_pos);
     vec4 reflect_dir = -reflect(light_dir,normal);
     
     
-    vec4 Q = intersect_along_ray(P+normal*0.05, light_dir);
+    vec4 Q = intersect_along_ray(P+normal*0.0005, light_dir);
     
     float lightIntensity = 1.;
     if ( dist(P,Q) < dist(P,light_pos)) {
         light.diffuseIntensity*=0.;
         light.specularIntensity*=0.;
     }
+
     //return phong(materChrome, light, normal,camera_dir,light_dir);
-    return phong(object_col, vec3(1), SHINY,
+    vec3 col = phong(object_col, vec3(1), SHINY,
                  light.diffuseIntensity, light.specularIntensity,
                  normal, camera_dir, light_dir);
+    return col;
 }
 #else
 vec3 phong_to_infinity(vec4 P, vec4 normal, vec4 camera_dir,
@@ -696,6 +702,9 @@ void main() {
 </script>
 
 <script>
+  //stats.js
+  //javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='https://mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+
   const config = {hidpi: false}
 
   const keysPressed = {}; // Object to track key states
