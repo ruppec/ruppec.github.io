@@ -52,6 +52,7 @@ image: "symmetric_cubics.png"
   }
 
   #cubicform {
+      font: normal 1.21em KaTeX_Main, Times New Roman, serif;
       position: absolute;
       bottom: 25px;
       left: 30px;
@@ -72,6 +73,7 @@ image: "symmetric_cubics.png"
   }
   body {
       margin: 0;
+      font-family: sans-serif;
   }
   canvas {
       position: fixed;
@@ -478,7 +480,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
             || distance_from_line(P.zyxw,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
             || distance_from_line(P.wyzx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
             || distance_from_line(P.wyxz,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
-            || distance_from_line(P.zywx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
+            //|| distance_from_line(P.zywx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
             || distance_from_line(P.zwxy,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r
             || distance_from_line(P.wzyx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r 
             || distance_from_line(P.yzwx,vec4(1,-1,0,0),vec4(1,1,c2o_lines)) < R_line/r ))
