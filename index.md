@@ -30,13 +30,15 @@ Follow my progress on my [demos page!](demos)
 -  "Asymptotic Invariants of Symbolic Powers of Binomial Edge Ideals" with
  Dennis Belotserkovskiy, Mariana Landín, and Lizzy Teryoshin.
  25 pages, 2025.
-[Preprint.](https://arxiv.org/abs/2510.14272){:target="_blank"}
+[Arxiv.](https://arxiv.org/abs/2510.14272){:target="_blank"}
 _Submitted_
 
 Research on binomial edge ideals with faculty from [University of
 Nebraska-Lincoln](https://nebraskacommalg.github.io/RTG/conferences/reu.html){:target="_blank"} at Centro de Investigación en Matemáticas (CIMAT) in
 Mexico.
 Selected to present at Joint Mathematics Meetings.
+
+Delivered a presentation on our work at CIMAT [recorded here](https://www.youtube.com/watch?v=GdGTsFzHxRs).
 
 Wrote and animated the following expository video (with Bryan E. Flores-Silva
 and Zoe Siegelnickel):
