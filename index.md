@@ -4,8 +4,8 @@ layout: default
 
 <img src="{{ 'assets/images/face.jpeg' }}" alt="My face" class="site-logo">
 
-I am a math undergraduate at Carleton College applying to grad school for Fall
-2026.
+I am a math undergraduate at Carleton College applying for math PhD programs
+Fall 2026.
 
 I am interested in Algebraic Geometry, Commutative Algebra, and Geometric
 Topology. My CV is [here](assets/documents/Charlie_Ruppe_CV.pdf)
@@ -31,13 +31,15 @@ Follow my progress on my [demos page!](demos)
  Dennis Belotserkovskiy, Mariana Landín, and Lizzy Teryoshin.
  25 pages, 2025.
 [Preprint.](https://arxiv.org/abs/2510.14272){:target="_blank"}
+_Submitted_
 
 Research on binomial edge ideals with faculty from [University of
 Nebraska-Lincoln](https://nebraskacommalg.github.io/RTG/conferences/reu.html){:target="_blank"} at Centro de Investigación en Matemáticas (CIMAT) in
 Mexico.
 Selected to present at Joint Mathematics Meetings.
 
-Wrote and animated the following expository video:
+Wrote and animated the following expository video (with Bryan E. Flores-Silva
+and Zoe Siegelnickel):
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GdGTsFzHxRs?si=EqYX6UsBKcG7Gjmk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
  - "Propogation of Solutions of Binary and Ternary Quadratic Forms" with Alex

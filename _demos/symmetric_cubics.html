@@ -247,7 +247,6 @@ vec3 phong(//material properties
     return diffuseTerm + specularTerm;
 }
 
-//TODO we are specular highlight is wrong
 //TODO we are getting some artifacts in R3
 //TODO create keypress event that sets current position in S3
 // as the focus point for the stereographic projection to R3
@@ -257,6 +256,7 @@ vec3 phong(//material properties
 //TODO implement this on WebGL directly for customization
 //TODO make lights appear at antipodal point as well, and customize
 // the shadowtracing code to do the single correct ray trace
+// for pathtracing https://www.rorydriscoll.com/2009/01/07/better-sampling/
 
 /* Going to be uniforms */
 uniform mat4 camera_pose;
@@ -589,7 +589,11 @@ float sdfCubic(vec4 Q)
 
 const float EPSILON = 5e-7;
 const float mindist = 10.*EPSILON;
+#ifdef S3
 const float MAX_DISTANCE = 2.*PI;
+#else
+const float MAX_DISTANCE = 100.;
+#endif
 const int MAX_STEPS = 256;
 float marchRay(Ray r) {
     float t=mindist;
@@ -744,6 +748,26 @@ void main() {
       return G;
   }
 
+  let s3 = true;
+  
+  // move t units in the i-th axis
+  function movement(A, t, i) {
+      if(!s3)
+          A._data[3][i] += t;
+      else
+          A = math.multiply(plane_rotation(t, i, 3), A);
+      return A;
+  }
+
+  function translation(v) {
+      return math.matrix(
+          [[1, 0, 0, v[0]],
+           [0, 1, 0, v[1]],
+           [0, 0, 1, v[2]],
+           [0, 0, 0,    1]]
+      )
+  }
+
   function orthonormalize(A) {
     const result = math.qr(A);
     return result.Q;
@@ -753,6 +777,9 @@ void main() {
   }
   let camera_pose = math.multiply(plane_rotation(-0.4,0,2),
                                   plane_rotation(-0.4,1,2));
+  if(!s3)
+      camera_pose = math.multiply(camera_pose,
+                                  translation([3,3,6]));
   let parameter_data = plane_rotation(0.1,2,0);
   const uniforms = {
       lights: [//TODO make the diffuseIntensity gamma-corrected
@@ -775,19 +802,15 @@ void main() {
   
       uniforms.iTime = time * 0.001;
       uniforms.iResolution = [gl.canvas.width, gl.canvas.height];
-      //mat4 camera_pose = plane_rotation(-0.4,0,2)*plane_rotation(-0.4,1,2);
-      //camera_pose[3] = vec4(3,3,6,1);
-      //orthonormalize(camera_pose);
-      //parameter_data = plane_rotation(0.1,2,0);
 
       //mat4 camera_pose;
-      let mov_step = 0.01;
+      let mov_step = 0.015;
       let rot_step = 0.03;
       let data_step = 0.001;
       if(keysPressed[' ']) {
           mov_step *= 5.;
           rot_step *= 2.;
-          data_step *= 5.;
+          data_step *= 10.;
       }
       if(keysPressed['Enter']) {
           parameter_data = orthonormalize(parameter_data);
@@ -806,12 +829,14 @@ void main() {
       if (keysPressed['PageUp'])
           camera_pose = math.multiply(plane_rotation(rot_step,0,1),camera_pose);
       if (keysPressed['w'])
-          camera_pose = math.multiply(plane_rotation(mov_step,2,3),camera_pose);
+          camera_pose = movement(camera_pose, mov_step, 2);
       if (keysPressed['a'])
+          camera_pose = movement(camera_pose, mov_step, 0);
           camera_pose = math.multiply(plane_rotation(-mov_step,3,0),camera_pose);
       if (keysPressed['s'])
-          camera_pose = math.multiply(plane_rotation(-mov_step,2,3),camera_pose);
+          camera_pose = movement(camera_pose, -mov_step, 2);
       if (keysPressed['d'])
+          camera_pose = movement(camera_pose, -mov_step, 0);
           camera_pose = math.multiply(plane_rotation(mov_step,3,0),camera_pose);
       if (keysPressed['ArrowRight'])
           camera_pose = math.multiply(plane_rotation(rot_step,0,2),camera_pose);
