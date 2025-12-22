@@ -13,42 +13,57 @@ image: "symmetric_cubics.png"
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.26/dist/katex.min.js" integrity="sha384-2WuUM/s2vwFJT/g//qyN5owxAP90NW9u+eST52Am1yDVVyku1+Dia3A+XcNqAFw+" crossorigin="anonymous"></script>
  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.26/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"
         onload="renderMathInElement(document.body);"></script>
-
 </head>
 <body>
-  <div class="widget" style="width:400px;margin-left:5px">
-  <h3 id="title">Symmetric Cubic Surfaces in \(S^3\)</h3>
-  <div id="description">
-    This is an immersive view of symmetric cubic surfaces in the \(S^3\) geometry
-    with all their (real) lines.
-    Based on <a href="https://tbrazel.github.io">Brazelton</a>-<a href="https://www.svraman.com">Raman</a>,
-    <a href="https://arxiv.org/pdf/2410.09270.">https://arxiv.org/pdf/2410.09270.</a><br>
-    Mini-map in the corner is the parameter space.<br>
-    Colored light sources are for judging the distance and form only.
-    Credit to
-    <a href="https://ruppec.github.io">Charlie Ruppe</a>,
-    <a href="https://claudiojacobo.com">Claudio Gómez-Gonzáles</a>.
+  <div class="widget" style="width:400px">
+    <h3 id="title">Symmetric Cubic Surfaces in \(S^3\)</h3>
+    <div id="description">
+      This is an immersive view of symmetric cubic surfaces in the \(S^3\) geometry
+      with all their (real) lines.
+      Based on <a href="https://tbrazel.github.io">Brazelton</a>-<a href="https://www.svraman.com">Raman</a>,
+      <a href="https://arxiv.org/pdf/2410.09270.">https://arxiv.org/pdf/2410.09270.</a><br>
+      Mini-map in the corner is the parameter space.<br>
+      Colored light sources are for judging the distance and form only.
+      Credit to
+      <a href="https://ruppec.github.io">Charlie Ruppe</a>,
+      <a href="https://claudiojacobo.com">Claudio Gómez-Gonzáles</a>.
+    </div>
   </div>
-  </div>
-  <div id="info" class="widget">
-    WASD to move<br>
-    Arrow keys to look around<br>
-    PgDn and PgUp to roll<br>
-    IJKL to adjust coefficients<br>
-    Hold Space to speed up<br>
-    Press Enter to fix orientation<br>
+  <div class="side-panel">
+    <div id="info" class="widget">
+      WASD to move<br>
+      Arrow keys to look around<br>
+      PgDn and PgUp to roll<br>
+      IJKL to adjust coefficients<br>
+      Hold Space to speed up<br>
+      Press Enter to fix orientation<br>
+    </div>
+    <div id="dropdown" class="widget">
+      <select id="surface-select" name="surface">
+      </select>
+    </div>
   </div>
   <div id="cubicform">
-   <span id='a'></span> \( \sum x_i^3 + \) <span id='b'></span> \(\sum x_i^2 x_j
-   + \)<span id='c'></span> \(\sum x_i x_j x_k = 0\)
+   (<span id='a'></span>) \( \sum x_i^3 + \) (<span id='b'></span>) \(\sum x_i^2 x_j
+   + \) (<span id='c'></span>) \(\sum x_i x_j x_k = 0\)
   </div>
 <canvas id="canvas"></canvas>
 </body>
 <style>
   .widget {
       display: block;
-      background-color: rgba(50, 50, 60, 0.4);
+      background-color: rgba(100, 100, 120, 0.4);
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding: 5px;
+      margin: 5px;
+      border-radius: 10px;
+  }
+
+  .side-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-left: auto;
   }
 
   #cubicform {
@@ -57,21 +72,30 @@ image: "symmetric_cubics.png"
       bottom: 25px;
       left: 30px;
   }
+  #dropdown {
+  }
   #description {
       margin: 5px;
       max-width: 500px;
   }
   #info {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      margin: 0;
+      margin-left: auto;
   }
 
   #title {
       margin: 5px;
   }
+
+  select {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid;
+      border-radius: 5px;
+      padding: 5px;
+  }
+
   body {
+      display: flex;
+      justify-content: space-between;
       margin: 0;
       font-family: sans-serif;
   }
@@ -727,6 +751,36 @@ void main() {
       keysPressed[event.key] = false;
   }, false);
 
+  const surfacePresets = {
+      'clebsch': {name: 'Clebsch Cubic', params: [0, -1, -2]},
+      'cayley': {name: "Cayley's Nodal", params: [0,0,1]},
+      'fermat': {name: "Fermat Cubic", params: [1,0,0]},
+  }
+
+  const selectElement = document.getElementById('surface-select');
+  Object.keys(surfacePresets).forEach(key => {
+    const option = document.createElement('option');
+    
+    option.value = key; // The internal ID
+    option.textContent = surfacePresets[key].name; // The text the user sees
+    
+    selectElement.appendChild(option);
+  });
+
+
+  selectElement.addEventListener('change', (e) => {
+      const surface = surfacePresets[e.target.value];
+      const params = surface.params;
+      
+      if (params) {
+          parameter_data = math.subset(parameter_data,
+                                       math.index(2, [0, 1, 2]),
+                                       params);
+          parameter_data = orthonormalize(parameter_data);
+          parameter_data = math.matrix(math.qr(parameter_data._data).Q);
+      }
+  });
+
   const gl = document.getElementById("canvas").getContext("webgl2");
   const programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
  
@@ -769,9 +823,44 @@ void main() {
   }
 
   function orthonormalize(A) {
-    const result = math.qr(A);
-    return result.Q;
+      // Convert input to a math.js matrix if it isn't one
+      const matrixA = math.transpose(math.matrix(A));
+      const size = matrixA.size();
+      const rows = size[0];
+      const cols = size[1];
+
+      // Initialize an empty matrix for the orthonormal vectors (Q)
+      let Q = math.zeros(rows, cols);
+
+      for (let j = cols-1; j >= 0; j--) {
+          // 1. Start with the original column vector a_j
+          // Indexing: row range (0 to rows), specific column j
+          let v = math.flatten(math.subset(matrixA, math.index(math.range(0, rows), j)));
+
+          // 2. Subtract the projections of v onto the previously found vectors in Q
+          for (let i = cols-1; i > j; i--) {
+              let q_i = math.flatten(math.subset(Q, math.index(math.range(0, rows), i)));
+              
+              // Scalar projection: dot(v, q_i)
+              let dotProduct = math.dot(v, q_i);
+              
+              // Subtract the projection: v = v - (v · q_i) * q_i
+              v = math.subtract(v, math.multiply(dotProduct, q_i));
+          }
+
+          // 3. Normalize the vector: q_j = v / ||v||
+          let norm = math.norm(v);
+          if (norm > 1e-10) { // Avoid division by zero for linearly dependent vectors
+              let q_j = math.divide(v, norm);
+              
+              // 4. Set the column in the Q matrix using .set()
+              Q.subset(math.index(math.range(0, rows), j), q_j);
+          }
+      }
+
+      return math.transpose(Q);
   }
+  
   function RGB(rgb) {
       return math.dotPow(rgb,2.2);
   }
@@ -783,10 +872,18 @@ void main() {
   let parameter_data = plane_rotation(0.1,2,0);
   const uniforms = {
       lights: [//TODO make the diffuseIntensity gamma-corrected
-          { pos: [1,1,1,-1], diffuseIntensity: RGB([.5,.5,.5]), specularIntensity: [1.,1.,1.]},
-          { pos: [.5,.5,-.5,.5], diffuseIntensity: RGB([.7,.5,.5]), specularIntensity: ([1.,1.,1.])},
-          { pos: [.5,-.5,.5,.5], diffuseIntensity: RGB([.5,.7,.5]), specularIntensity: ([1.,1.,1.])},
-          { pos: [-.5,.5,.5,.5], diffuseIntensity: RGB([.5,.5,.7]), specularIntensity: ([1,1,1])},
+          { pos: [1,1,1,-1],
+            diffuseIntensity: RGB([.5,.5,.5]),
+            specularIntensity: [.9,.9,.9]},
+          { pos: [.5,.5,-.5,.5],
+            diffuseIntensity: RGB([.7,.5,.5]),
+            specularIntensity: ([1.,.9,.9])},
+          { pos: [.5,-.5,.5,.5],
+            diffuseIntensity: RGB([.5,.7,.5]),
+            specularIntensity: ([.9,1.,.9])},
+          { pos: [-.5,.5,.5,.5],
+            diffuseIntensity: RGB([.5,.5,.7]),
+            specularIntensity: ([.9,.9,1.])},
       ],
       camera_pose: camera_pose.toArray().flat(),
       parameter_data: parameter_data.toArray().flat(),
@@ -813,8 +910,8 @@ void main() {
           data_step *= 10.;
       }
       if(keysPressed['Enter']) {
-          parameter_data = orthonormalize(parameter_data);
-          camera_pose = orthonormalize(camera_pose);
+          parameter_data = math.matrix(math.qr(parameter_data._data).Q);
+          camera_pose = math.matrix(math.qr(camera_pose._data).Q);
       }
       if (keysPressed['i'])
           parameter_data = math.multiply(plane_rotation(-data_step,1,2),parameter_data);
