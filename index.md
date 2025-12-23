@@ -17,6 +17,9 @@ ruppec at carleton.edu
 - Joint Math Meetings, Washington DC. Presenting with Dennis Belotserkovskiy on
    our recent paper. Jan 4th.
    
+- Illustration as a Mathematical Research Technique Program, IHP in
+  Paris. Attending Feb 16-20.
+   
 ## What I am working on...
 
 My senior thesis in math illustration is looking to generate new intuition for
