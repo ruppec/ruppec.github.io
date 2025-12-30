@@ -33,7 +33,7 @@ Follow my progress on my [demos page!](demos)
 -  "Asymptotic Invariants of Symbolic Powers of Binomial Edge Ideals" with
  Dennis Belotserkovskiy, Mariana Landín, and Lizzy Teryoshin.
  25 pages, 2025.
-[Arxiv.](https://arxiv.org/abs/2510.14272){:target="_blank"}
+[arXiv.](https://arxiv.org/abs/2510.14272){:target="_blank"}
 _Submitted_
 
 Research on binomial edge ideals with faculty from University of
