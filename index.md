@@ -36,9 +36,10 @@ Follow my progress on my [demos page!](demos)
 [Arxiv.](https://arxiv.org/abs/2510.14272){:target="_blank"}
 _Submitted_
 
-Research on binomial edge ideals with faculty from [University of
-Nebraska-Lincoln](https://nebraskacommalg.github.io/RTG/conferences/reu.html){:target="_blank"} at Centro de Investigación en Matemáticas (CIMAT) in
-Mexico.
+Research on binomial edge ideals with faculty from University of
+Nebraska-Lincoln and Centro de Investigación en Matemáticas in Mexico as part of
+the [International REU in Commutative Algebra
+2025](https://nebraskacommalg.github.io/RTG/conferences/reu.html){:target="_blank"}
 Selected to present at Joint Mathematics Meetings.
 
 Delivered a presentation on our work at CIMAT [recorded here](https://www.youtube.com/watch?v=GdGTsFzHxRs).
