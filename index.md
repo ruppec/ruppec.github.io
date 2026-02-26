@@ -12,21 +12,13 @@ Topology. My CV is [here](assets/documents/Charlie_Ruppe_CV.pdf)
 
 ruppec at carleton.edu
 
-## Upcoming
-
-- Joint Math Meetings, Washington DC. Presenting with Dennis Belotserkovskiy on
-   our recent paper. Jan 4th.
-   
-- Illustration as a Mathematical Research Technique Program, IHP in
-  Paris. Attending Feb 16-20.
-   
 ## What I am working on...
 
 My senior thesis in math illustration is looking to generate new intuition for
 certain data and objects by visualizing them in non-euclidean spaces using
 computer graphics.
 
-Follow my progress on my [demos page!](demos)
+Follow my progress at [the project website](2026mathcomps) and on my [demos page!](demos)
 
 ## Research
 
