@@ -4,13 +4,16 @@ layout: default
 
 <img src="{{ 'assets/images/face.jpeg' }}" alt="My face" class="site-logo">
 
-I am a math undergraduate at Carleton College applying for math PhD programs
-Fall 2026.
+I am a math undergraduate at Carleton College.
 
 I am interested in Algebraic Geometry, Commutative Algebra, and Geometric
-Topology. My CV is [here](assets/documents/Charlie_Ruppe_CV.pdf)
+Topology.
 
-ruppec at carleton.edu
+My CV is [here](assets/documents/Charlie_Ruppe_CV.pdf).
+
+[<i class="fab fa-github"></i>](https://github.com/ruppec){:target="_blank"} • 
+[<i class="fab fa-linkedin"></i>](https://www.linkedin.com/in/charlie-ruppe-0a410724a/){:target="_blank"} • 
+[<i class="fas fa-envelope"></i>](mailto:ruppe.charlie@gmail.com)
 
 ## What I am working on...
 
@@ -22,11 +25,13 @@ Follow my progress at [the project website](2026mathcomps) and on my [demos page
 
 ## Research
 
--  "Asymptotic Invariants of Symbolic Powers of Binomial Edge Ideals" with
- Dennis Belotserkovskiy, Mariana Landín, and Lizzy Teryoshin.
- 25 pages, 2025.
+<details open markdown="1">
+<summary markdown="span"> 
+"Asymptotic Invariants of Symbolic Powers of Binomial Edge Ideals" with
+Dennis Belotserkovskiy, Mariana Landín, and Lizzy Teryoshin.
+Submitted, 2025.
 [arXiv.](https://arxiv.org/abs/2510.14272){:target="_blank"}
-_Submitted_
+</summary>
 
 Research on binomial edge ideals with faculty from University of
 Nebraska-Lincoln and Centro de Investigación en Matemáticas in Mexico as part of
@@ -41,17 +46,27 @@ Wrote and animated the following expository video (with Bryan E. Flores-Silva
 and Zoe Siegelnickel):
 <iframe width="560" height="315" src="https://www.youtube.com/embed/GdGTsFzHxRs?si=EqYX6UsBKcG7Gjmk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
- - "Propogation of Solutions of Binary and Ternary Quadratic Forms" with Alex
+</details>
+
+<details markdown="1">
+<summary markdown="span">
+"Propogation of Solutions of Binary and Ternary Quadratic Forms" with Alex
    Lattal, and [Corey
    Brooke](https://sites.google.com/view/coreybrooke/home){:target="_blank"}. 2024,
    In preparation.
+   </summary>
+
    
 Research on organizing integer solutions of quadratic forms as trees
 parameterized by matrix representations of free groups.  Delivered a 25-minute
 presentation on our results to our summer research peers.
+</details>
   
- - "Magnetic Configurations in Mesoscale Magnetic Dots" with Grace Gatewood,
+<details markdown="1">
+<summary markdown="span">
+"Magnetic Configurations in Mesoscale Magnetic Dots" with Grace Gatewood,
    Petros Van den Heuvel, and [Barry Costanzi](https://www.carleton.edu/directory/bcostanzi/){:target="_blank"}.
+</summary>
 
 Modeled energy landscapes of 250nm permalloy dots in
 Golang/Python. Implemented system for managing simulations using
@@ -61,6 +76,7 @@ measurement taking. Used a scanning electron microscope to image our samples
 for computer simulations. Results given in a poster session: "Magnetic
 Configurations in Mesoscale Magnetic Dots'' Student Research and Internship
 Symposium. Carleton College, Northfield, MN, October 2023.
+</details>
 
 ## Demos
 <div class="demos-list">
