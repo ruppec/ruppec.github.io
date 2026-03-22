@@ -1,0 +1,69 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ .Title }}</title>
+<style>
+  /* creates the black bar when you try and scroll above the content*/
+  html {  border-top: 2px solid #383838;}
+  body { max-width: 650px;
+         margin: 40px auto;
+         padding: 0 10px;
+         line-height: 1.6;
+         font-family: sans-serif;
+         text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+         {{ $bg := resources.Get "images/body-bg.png" }}
+         background: #e7e7e7 url({{ $bg }}) 0 0 repeat;
+       }
+  h1 {
+      color: #383838;
+      font-style: normal;
+  }
+  a {
+      color: #0077cc;
+      text-decoration: none;
+  }
+  header a {
+      color: inherit;
+  }
+  header h1 {
+      margin: 0;
+      /*border-bottom: 2px solid #111;*/
+      font-size: 1.5rem;
+  }
+  header li {
+      color: #2bbc8a;
+      letter-spacing: .01em;
+      font-weight: 200;
+      font-style: normal;
+      font-size: .8rem;
+  }
+  header #nav ul {
+      margin-top: 5px;
+  }
+  header #nav ul li {
+      display: inline-block;
+      margin-right: 15px;
+      border-right: 1px dotted;
+      border-right-color: currentcolor;
+      border-color: #2bbc8a;
+      vertical-align: middle;
+  }
+  header #nav ul li a {
+      margin-right: 15px;
+      font-size: 1.0rem;
+  }
+  header #nav ul li:last-child {
+      margin-right: 0;
+      border-right: 0;
+  }
+  #logo {
+      float:left;
+      margin-right: 20px;
+      border-radius: 5%;
+      filter: grayscale(100%);
+      transition: filter 0.2s ease-in-out;
+  }
+  #logo:hover {
+      filter: grayscale(0%);
+  }
+</style>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
