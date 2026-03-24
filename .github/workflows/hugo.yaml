@@ -36,6 +36,7 @@ jobs:
       HUGO_VERSION: 0.157.0
     steps:
       - name: Cache Hugo CLI
+        id: cache-hugo-cli
         uses: actions/cache@v4
         with:
             path: /usr/local/bin/hugo
@@ -43,7 +44,7 @@ jobs:
             restore-keys: |
                 ${{ runner.os }}-hugo-
       - name: Install Hugo CLI
-        if: steps.cache-primes.outputs.cache-hit != 'true'
+        if: steps.cache-hugo-cli.outputs.cache-hit != 'true'
         run: |
           wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.deb \
           && sudo dpkg -i ${{ runner.temp }}/hugo.deb
