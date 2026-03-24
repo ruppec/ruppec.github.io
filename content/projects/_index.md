@@ -1,7 +1,9 @@
 +++
 date = '2026-03-21T19:15:41-04:00'
 title = 'Projects'
+draft = false
 +++
+
 
 ## Senior Thesis 2026
 
@@ -25,11 +27,14 @@ the [International REU in Commutative Algebra
 
 Selected to present at Joint Mathematics Meetings.
 
-Delivered a presentation on our work at CIMAT [recorded here](https://www.youtube.com/watch?v=GdGTsFzHxRs).
+Delivered a presentation on our work at CIMAT [recorded here](https://www.youtube.com/watch?v=vsOWdoB_vZQ).
 
 Wrote and animated the following expository video (with Bryan E. Flores-Silva
 and Zoe Siegelnickel):
-<iframe width="560" height="315" src="https://www.youtube.com/embed/GdGTsFzHxRs?si=EqYX6UsBKcG7Gjmk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+[<img src="/images/whatisabinomialedgeideal.png" alt="screenshot of expository
+video">
+](https://www.youtube.com/watch?v=GdGTsFzHxRs)
 
 ## Summer 2024
 "Propogation of Solutions of Binary and Ternary Quadratic Forms" with Alex

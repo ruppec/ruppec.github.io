@@ -2,9 +2,8 @@ baseURL = 'https://ruppec.github.io/'
 languageCode = 'en-us'
 title = 'Charlie Ruppe'
 
-theme = "cactus"
 
-sectionPagesMenu = 'main'
+sectionPagesMenu = "main"
 
 [markup.goldmark.renderer]
     unsafe = true
@@ -14,4 +13,5 @@ sectionPagesMenu = 'main'
 
 [markup.tableOfContents]
     startLevel = 2
+    ordered = false
     endLevel = 3

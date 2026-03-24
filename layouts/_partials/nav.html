@@ -1,6 +1,6 @@
-<div id="nav">
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/projects/">Projects</a></li>
-  </ul>
-</div>
+<ul>
+  <li><a href="/">Home</a></li>
+  {{ range .Site.Sections }}
+  <li><a href="{{ .RelPermalink }}">{{ .Name }}</a></li>
+{{ end }}
+</ul>

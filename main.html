@@ -1,0 +1,15 @@
+<h1>Site Sections Found:</h1>
+<ul>
+{{ range .Site.Sections }}
+  <li>{{ .LinkTitle }} -> {{ .RelPermalink }}</li>
+{{ end }}
+</ul>
+
+<hr>
+
+<h1>Site Menus Found (If defined):</h1>
+<ul>
+{{ range .Site.Menus.main }}
+  <li>{{ .Name }} -> {{ .URL }}</li>
+{{ end }}
+</ul>

@@ -1,0 +1,10 @@
+# Hugo output
+/public/
+/resources/_gen/
+.hugo_build.lock
+
+# Other temporary or OS-specific files
+/tmp/
+/dist/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  <div id="grid-container">
+    <div class="left-column"></div>
+    <div class="center-column">
+    <header>
+      {{ partial "header.html" . }}
+    </header>
+
+    <hr>
+    <h1 id="page-title">{{ .Title }}</h1>
+    <hr>
+
+    <main>
+      {{ block "main" . }}
+      This will be replaced with content from the 
+      corresponding "define" action found in the template
+      to which this base template is applied.
+      {{ end }}
+    </main>
+
+    <footer>
+      {{ partial "footer.html"}}
+    </footer>
+    </div>
+    <div class="right-column">
+      {{ block "right-column" . }}
+      {{ end }}
+    </div>
+  </div>
+</body>
+</html>

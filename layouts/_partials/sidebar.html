@@ -1,0 +1,20 @@
+<aside id="sidebar">
+  {{ if .IsPage }}
+  <span id="actions">
+    <ul>
+      {{ with .PrevInSection }}
+      <li><a id="previous-post" title="Previous post" href="{{ .RelPermalink }}">⮜</a></li>
+      {{ end }}
+      {{ with .NextInSection }}
+      <li><a id="next-post" title="Next post" href="{{ .RelPermalink }}">⮞</a></li>
+      {{ end }}
+      {{ with .Parent }}
+      <li><a title="Up" href="{{ .RelPermalink }}">⮝</a></li>
+      {{ end }}
+    </ul>
+  </span>
+  {{ end }}
+
+  <a href="#"><h1>{{ .Page.Title }}</h1></a>
+  {{ .TableOfContents }}
+</aside>

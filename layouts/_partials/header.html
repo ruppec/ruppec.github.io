@@ -4,10 +4,19 @@
   <img id="logo" src="{{ $lowRes.RelPermalink }}" width="75" height="75" alt="Me">
 </a>
 
-  <h1>
-    <a href="/">{{ .Site.Title }}</a>
-    {{ if not .IsHome }}
-       → <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-    {{ end }}
-  </h1>
-{{ partial "nav.html" }}
+<h1>
+  <a href="/">{{ .Site.Title }}</a>
+</h1>
+<nav>
+  <div id="horizontal-nav">
+  {{ partial "nav.html" . }}
+  </div>
+</nav>
+<div id="vertical-nav">
+  <details>
+    <summary>
+    </summary>
+    {{ partial "nav.html" .}}
+  </details>
+</div>
+

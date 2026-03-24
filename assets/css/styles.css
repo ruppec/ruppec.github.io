@@ -1,0 +1,232 @@
+/* creates the black bar when you try and scroll above the content*/
+html {  border-top: 2px solid #383838;}
+body { line-height: 1.6;
+       font-family: sans-serif;
+       text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+       background: #e7e7e7 url("/images/body-bg.png") 0 0 repeat;
+       margin: 0;
+     }
+
+#grid-container {
+    display: grid;
+    grid-template-columns: 1fr minmax(100px,650px) 1fr;
+}
+
+.center-column {
+    grid-column: 2;
+    margin: 40px 0px;
+    padding: 0px 20px;
+}
+
+main img {
+    box-shadow: -5px 5px 15px gray;
+    margin: 20px auto;
+    max-width: 80%;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+}
+main a {
+    /*color: #0077c;*/
+    color: inherit;
+    text-decoration: underline dotted;
+}
+main a:hover {
+    text-decoration-color: black;
+}
+header {
+    text-wrap-mode: nowrap;
+}
+header a {
+    color: inherit;
+}
+header h1 {
+    margin: 0;
+    /*border-bottom: 2px solid #111;*/
+    font-size: 1.5rem;
+}
+header li {
+    color: #2bbc8a;
+    letter-spacing: .01em;
+    font-weight: 200;
+    font-style: normal;
+    font-size: .8em;
+}
+header #horizontal-nav ul {
+    margin-top: 5px;
+}
+header #horizontal-nav ul li {
+    display: inline-block;
+    margin-right: 15px;
+    border-right: 1px dotted;
+    border-right-color: currentcolor;
+    border-color: #2bbc8a;
+    vertical-align: middle;
+}
+header #horizontal-nav ul li a {
+    margin-right: 15px;
+    font-size: 1.0rem;
+}
+header #horizontal-nav ul li:last-child {
+    margin-right: 0;
+    border-right: 0;
+}
+#logo {
+    float:left;
+    margin-right: 20px;
+    border-radius: 5%;
+    filter: grayscale(100%);
+    transition: filter 0.2s ease-in-out;
+    border: 1px solid grey;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8);
+}
+hr {
+    border: none;
+    border-top: 2px dotted #333;
+    height: 0;
+    filter: drop-shadow(0 1px 0 rgba(255,255,255,0.8));
+}
+#logo:hover {
+    filter: grayscale(0%);
+}
+
+header #horizontal-nav ul .icon {
+    display: none
+}
+
+#page-title {
+    text-align: center;
+}
+
+/* the following is needed for proper positioning of the anchor link*/
+h2, h3, h4, h5, h6 {
+    position: relative;
+}
+.anchor-link {
+    color: #2bbc8a;
+    position: absolute;
+    left:  -1.2rem;
+    text-decoration: none;
+}
+
+
+#sidebar {
+    position: sticky;
+    top: 3rem;
+    right: 0em;
+    padding-right: 2em;
+    max-width: 250px;
+    width: max-content;
+    display: inline-block;
+    float: right;
+    z-index: 100;
+    font-size: .6em;
+    a:hover {
+        color: rgba(86, 124, 119, 0.4);
+    }
+    a {
+        color:inherit;
+        text-decoration: none;
+    }
+}
+
+@media (max-width: 920px) {
+    #sidebar {
+        display: none;
+    }
+}
+
+
+#sidebar h1 {
+    margin: 0.5em 1em;
+    text-align: center;
+}
+
+#sidebar nav {
+    float: right;
+    clear: both;
+    overflow: auto;
+    font-size: 1.5em;
+}
+#sidebar nav ul {
+    margin-top: 0;
+    padding-left: 1em;
+}
+#sidebar nav > ul > li {
+    padding-left: 5px;
+}
+#sidebar nav ul li::marker {
+  color: #2bbc8a;
+}
+#sidebar nav > ul > li::marker {
+  content: "#";
+}
+
+
+#actions {
+    text-align: right;
+    font-size: 2em;
+    ul {
+        padding-right: 1em;
+        margin: 0;
+    }
+    ul li {
+        display: inline-block;
+        margin-right: .6em;
+    }
+}
+
+#archive .post-list .post-item {
+    list-style-type: none;
+}
+
+#archive .post-list .post-item .meta {
+  display: block;
+  margin-right: 16px;
+  min-width: 100px;
+  color: #666;
+  font-size: 14px;
+}
+
+@media (min-width: 480px) {
+    #archive .post-list .post-item {
+        display: flex;
+        margin-bottom: 5px;
+        margin-left: 1rem;
+    }
+    #archive .post-list .post-item .meta {
+        text-align: left;
+    }
+}
+
+details summary {
+    line-height: 1em;
+    padding-top: 0.2em;
+    color: #2bbc8a;
+}
+details summary::marker {
+    content: "≡";
+    font-size: 3rem;
+}
+details {
+    text-align: right;
+    font-size: 2em;
+    ul {
+        list-style: none;
+        margin: 0;
+    }
+}
+
+#vertical-nav {
+    display: none;
+}
+@media(max-width: 480px) {
+    #vertical-nav {
+        display: inherit;
+    }
+    #horizontal-nav {
+        display: none;
+    }
+}
