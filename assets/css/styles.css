@@ -22,6 +22,7 @@ main img {
     box-shadow: -5px 5px 15px gray;
     margin: 20px auto;
     max-width: 80%;
+    height: auto;
     display: block;
 }
 
@@ -48,7 +49,7 @@ header h1 {
     font-size: 1.5rem;
 }
 header li {
-    color: #2bbc8a;
+    color: #b15656;
     letter-spacing: .01em;
     font-weight: 200;
     font-style: normal;
@@ -62,7 +63,7 @@ header #horizontal-nav ul li {
     margin-right: 15px;
     border-right: 1px dotted;
     border-right-color: currentcolor;
-    border-color: #2bbc8a;
+    border-color: #b15656;
     vertical-align: middle;
 }
 header #horizontal-nav ul li a {
@@ -74,6 +75,8 @@ header #horizontal-nav ul li:last-child {
     border-right: 0;
 }
 #logo {
+    height:75px;
+    width: auto;
     float:left;
     margin-right: 20px;
     border-radius: 5%;
@@ -105,7 +108,7 @@ h2, h3, h4, h5, h6 {
     position: relative;
 }
 .anchor-link {
-    color: #2bbc8a;
+    color: #b15656;
     position: absolute;
     left:  -1.2rem;
     text-decoration: none;
@@ -158,7 +161,7 @@ h2, h3, h4, h5, h6 {
     padding-left: 5px;
 }
 #sidebar nav ul li::marker {
-  color: #2bbc8a;
+  color: #b15656;
 }
 #sidebar nav > ul > li::marker {
   content: "#";
@@ -204,7 +207,7 @@ h2, h3, h4, h5, h6 {
 details summary {
     line-height: 1em;
     padding-top: 0.2em;
-    color: #2bbc8a;
+    color: #b15656;
 }
 details summary::marker {
     content: "≡";
@@ -229,4 +232,9 @@ details {
     #horizontal-nav {
         display: none;
     }
+}
+
+
+figcaption {
+    font-size: smaller;
 }

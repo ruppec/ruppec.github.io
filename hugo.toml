@@ -2,6 +2,10 @@ baseURL = 'https://ruppec.github.io/'
 languageCode = 'en-us'
 title = 'Charlie Ruppe'
 
+[params]
+  inlineCSS = true
+  description = "A page of my personal website"
+
 [caches]
   [caches.images]
     dir = ':cacheDir/images'
@@ -11,10 +15,23 @@ sectionPagesMenu = "main"
 [markup.goldmark.renderer]
     unsafe = true
 
+
+
+
 [markup.goldmark.parser]
     autoHeadingID = true
+    wrapStandAloneImageWithinParagraph = false
 
 [markup.tableOfContents]
     startLevel = 2
     ordered = false
     endLevel = 3
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
+          inline = [['\(', '\)'], ['$', '$']]

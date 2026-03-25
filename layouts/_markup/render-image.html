@@ -1,0 +1,15 @@
+{{- $img := .Page.Resources.Get .Destination -}}
+
+{{- if $img -}}
+  {{/* If the image is a Hugo Resource, we get its dimensions */}}
+  <img src="{{ $img.RelPermalink }}" 
+       width="{{ $img.Width }}" 
+       height="{{ $img.Height }}" 
+       alt="{{ .Text }}" 
+       loading="lazy">
+{{- else -}}
+  {{/* Fallback for external images (URLs) where Hugo can't see the file */}}
+  <img src="{{ .Destination | safeURL }}" 
+       alt="{{ .Text }}" 
+       loading="lazy">
+{{- end -}}

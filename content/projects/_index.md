@@ -1,6 +1,7 @@
 +++
 date = '2026-03-21T19:15:41-04:00'
 title = 'Projects'
+description = "A list of my past and ongoing projects/relevant experience"
 draft = false
 +++
 
@@ -32,9 +33,7 @@ Delivered a presentation on our work at CIMAT [recorded here](https://www.youtub
 Wrote and animated the following expository video (with Bryan E. Flores-Silva
 and Zoe Siegelnickel):
 
-[<img src="/images/whatisabinomialedgeideal.png" alt="screenshot of expository
-video">
-](https://www.youtube.com/watch?v=GdGTsFzHxRs)
+[![screenshot of expository video](/images/whatisabinomialedgeideal.png)](https://www.youtube.com/watch?v=GdGTsFzHxRs)
 
 ## Summer 2024
 "Propogation of Solutions of Binary and Ternary Quadratic Forms" with Alex

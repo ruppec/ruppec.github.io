@@ -1,7 +1,9 @@
 <a href="/">
   {{ $img := resources.Get "images/face.jpeg" }}
-  {{ $lowRes := $img.Resize "500x webp" }} 
-  <img id="logo" src="{{ $lowRes.RelPermalink }}" width="75" height="75" alt="Me">
+  {{ $lowRes := $img.Resize "150x webp" }} 
+  <img id="logo" src="{{ $lowRes.RelPermalink }}" width="{{ $img.Width }}"
+  height="{{ $img.Height }}"
+  alt="A picture of my face" loading="eager">
 </a>
 
 <h1>

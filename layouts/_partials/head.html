@@ -1,9 +1,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="{{ .Description | default
+                                  .Site.Params.description }}">
+
 <title>{{ .Title }}</title>
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="icon" type="image/x-icon" href="/favicon.svg">
+<!-- <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"> -->
 
-{{ $styles := resources.Get "css/styles.css" | minify | fingerprint }}
-<link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
+<!-- Link or Inline CSS depending on inlineCSS parameter in hugo.toml -->
+{{ $style := resources.Get "css/styles.css" | minify | fingerprint }}
+{{ if .Site.Params.inlineCSS }}
+  {{/* Inline the CSS directly into a style tag */}}
+  <style>
+    {{ $style.Content | safeCSS }}
+  </style>
+{{ else }}
+  {{/* Link to the CSS file normally */}}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+{{ end }}
 
+{{ $noop := .WordCount }}
+{{ if .Page.Store.Get "hasMath" }}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+  integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+  crossorigin="anonymous"
+  >
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.42/dist/contrib/copy-tex.min.js"
+        integrity="sha384-Pe2JWbaShhSRT0SESJ9XLPeAsi4yrNi7r/CiH0Coq7giBjK5a6Ae7XcybE8rNlQP"
+        crossorigin="anonymous"></script>
+{{ end }}

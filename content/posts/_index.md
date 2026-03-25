@@ -1,7 +1,7 @@
 +++
 date = '2026-03-21T19:15:41-04:00'
-title = 'Writing'
+title = 'Posts'
 draft = false
 +++
 
-This is my writings page. More to come!
+More to come!

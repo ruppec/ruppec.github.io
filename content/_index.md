@@ -1,18 +1,17 @@
 +++
 title = "About Me"
+description = "The Homepage for my personal website which introduces me and my interests"
 +++
-
-
 
 I am a math undergraduate at Carleton College.
 
 I am interested in Algebraic Geometry, Commutative Algebra, and Geometric
 Topology.
 
-My CV is [here](documents/Charlie_Ruppe_CV.pdf).
+[My CV.](documents/Charlie_Ruppe_CV.pdf)
 
-[<i class="fab fa-github"></i>](https://github.com/ruppec) • 
-[<i class="fab fa-linkedin"></i>](https://www.linkedin.com/in/charlie-ruppe-0a410724a/) • 
-[<i class="fas fa-envelope"></i>](mailto:ruppe.charlie@gmail.com)
+[Github](https://github.com/ruppec) • 
+[Linkedin](https://www.linkedin.com/in/charlie-ruppe-0a410724a/) • 
+[Email](mailto:ruppe.charlie@gmail.com)
 
 
