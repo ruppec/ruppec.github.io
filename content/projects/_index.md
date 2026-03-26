@@ -33,7 +33,11 @@ Delivered a presentation on our work at CIMAT [recorded here](https://www.youtub
 Wrote and animated the following expository video (with Bryan E. Flores-Silva
 and Zoe Siegelnickel):
 
-[![screenshot of expository video](/images/whatisabinomialedgeideal.png)](https://www.youtube.com/watch?v=GdGTsFzHxRs)
+{{< figure
+src="whatisabinomialedgeideal.webp"
+alt="A video introduction to binomial edge ideals"
+link="https://www.youtube.com/watch?v=GdGTsFzHxRs"
+>}}
 
 ## Summer 2024
 "Propogation of Solutions of Binary and Ternary Quadratic Forms" with Alex

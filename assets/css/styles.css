@@ -26,9 +26,20 @@ main img {
     display: block;
 }
 
+figure {
+    display: block;
+    text-align: center;
+
+    /* this prevents the side margins of link-wrapped images from being clickable*/
+    img {
+        display: inline;
+    }
+}
+
 a {
     text-decoration: none;
 }
+
 main a {
     /*color: #0077c;*/
     color: inherit;
