@@ -1,9 +1,9 @@
 +++
-title = "About Me"
+title = "About"
 description = "The Homepage for my personal website which introduces me and my interests"
 +++
 
-I am a math undergraduate at Carleton College.
+I am a math undergraduate at Carleton College. My pronouns are he/him.
 
 I am interested in Algebraic Geometry, Commutative Algebra, and Geometric
 Topology.

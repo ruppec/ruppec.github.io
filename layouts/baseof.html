@@ -11,9 +11,7 @@
       {{ partial "header.html" . }}
     </header>
 
-    <hr>
     <h1 id="page-title">{{ .Title }}</h1>
-    <hr>
 
     <main>
       {{ block "main" . }}
@@ -24,7 +22,7 @@
     </main>
 
     <footer>
-      {{ partial "footer.html"}}
+      {{ partial "footer.html" . }}
     </footer>
     </div>
     <div class="right-column">

@@ -3,7 +3,13 @@
 <meta name="description" content="{{ .Description | default
                                   .Site.Params.description }}">
 
-<title>{{ .Title }}</title>
+<title>
+{{ if .IsHome }}
+    {{ .Site.Title }}
+  {{ else }}
+    {{ .Title }} | {{ .Site.Title }}
+  {{ end }}
+</title>
 <link rel="icon" type="image/x-icon" href="/favicon.svg">
 <!-- <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"> -->
 
@@ -31,3 +37,5 @@
         integrity="sha384-Pe2JWbaShhSRT0SESJ9XLPeAsi4yrNi7r/CiH0Coq7giBjK5a6Ae7XcybE8rNlQP"
         crossorigin="anonymous"></script>
 {{ end }}
+
+<link rel="preload" as="image" href="headshot.jpg">

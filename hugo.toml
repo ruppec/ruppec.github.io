@@ -1,6 +1,8 @@
 baseURL = 'https://ruppec.github.io/'
 languageCode = 'en-us'
 title = 'Charlie Ruppe'
+copyright = '© 2026 Charles Ruppe.'
+
 
 [params]
   inlineCSS = true

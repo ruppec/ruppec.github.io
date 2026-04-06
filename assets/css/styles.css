@@ -5,6 +5,7 @@ body { line-height: 1.6;
        text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
        background: #e7e7e7 url("/images/body-bg.png") 0 0 repeat;
        margin: 0;
+
      }
 
 #grid-container {
@@ -16,6 +17,13 @@ body { line-height: 1.6;
     grid-column: 2;
     margin: 40px 0px;
     padding: 0px 20px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
 }
 
 main img {
@@ -40,12 +48,13 @@ a {
     text-decoration: none;
 }
 
-main a {
+main a, footer a {
     /*color: #0077c;*/
     color: inherit;
     text-decoration: underline dotted;
 }
 main a:hover {
+    color: #b15656;
     text-decoration-color: black;
 }
 header {
@@ -81,6 +90,10 @@ header #horizontal-nav ul li a {
     margin-right: 15px;
     font-size: 1.0rem;
 }
+
+header a:hover {
+    text-decoration: underline;
+}
 header #horizontal-nav ul li:last-child {
     margin-right: 0;
     border-right: 0;
@@ -93,8 +106,10 @@ header #horizontal-nav ul li:last-child {
     border-radius: 5%;
     filter: grayscale(100%);
     transition: filter 0.2s ease-in-out;
+    background-color: grey;
     border: 1px solid grey;
     box-shadow: 0 1px 0 rgba(255,255,255,.8);
+    content-visibility: auto;
 }
 hr {
     border: none;
@@ -111,8 +126,9 @@ header #horizontal-nav ul .icon {
 }
 
 #page-title {
-    text-align: center;
+    color: #094074;
 }
+
 
 /* the following is needed for proper positioning of the anchor link*/
 h2, h3, h4, h5, h6 {
