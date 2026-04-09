@@ -10,7 +10,6 @@ body { line-height: 1.6;
        text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
        background: #e7e7e7 url("/images/body-bg.png") 0 0 repeat;
        margin: 0;
-
      }
 
 #grid-container {
@@ -266,7 +265,20 @@ details {
     }
 }
 
+dl dt {
+    font-weight: bold;
+}
+
 
 figcaption {
     font-size: smaller;
+}
+
+/* CODE BLOCKS */
+pre {
+    code {
+        text-shadow: none;
+    }
+    white-space: pre;
+    overflow-x: auto;
 }
