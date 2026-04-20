@@ -3,24 +3,25 @@
   {{ $lowRes := $img.Resize "150x webp" }} 
   <img id="logo"
        src="{{ $lowRes.RelPermalink }}"
-       width="{{ $img.Width }}"
-       height="{{ $img.Height }}"
+       width="{{ $lowRes.Width }}"
+       height="{{ $lowRes.Height }}"
        alt="A picture of my face"
        fetchpriority="high"
        loading="eager">
 </a>
 
+<div id="heading-and-nav">
 <h1>
   <a href="/">{{ .Site.Title }}</a>
 </h1>
-<nav>
-  <div id="horizontal-nav">
+<div id="horizontal-nav">
   {{ partial "nav.html" . }}
-  </div>
-</nav>
+</div>
+</div>
 <div id="vertical-nav">
   <details>
     <summary>
+     {{ partial "icons" "menu-outline" }} 
     </summary>
     {{ partial "nav.html" .}}
   </details>

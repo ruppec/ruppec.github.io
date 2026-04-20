@@ -10,8 +10,5 @@ Topology.
 
 [My CV.](documents/Charlie_Ruppe_CV.pdf)
 
-[Github](https://github.com/ruppec) • 
-[Linkedin](https://www.linkedin.com/in/charlie-ruppe-0a410724a/) • 
-[Email](mailto:ruppe.charlie@gmail.com)
-
-
+[{{< icons "logo-github"  >}} Github](https://github.com/ruppec) •
+[{{< icons "mail-outline" >}} Email](mailto:ruppe.charlie@gmail.com)

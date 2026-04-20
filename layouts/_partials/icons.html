@@ -1,0 +1,4 @@
+{{- $svg := resources.Get (print "icons/" . ".svg") -}}
+{{- with $svg -}}
+<span class="inline-svg">{{ .Content | safeHTML }}</span>
+{{- end -}}

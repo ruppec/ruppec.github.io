@@ -1,62 +1,66 @@
-+++
-title = "Jewelry"
-author = ["Charlie Ruppe"]
-date = 2024-03-23T18:16:20-04:00
-draft = true
-+++
+#+hugo_base_dir: ../../../
+#+hugo_section: posts
+#+hugo_bundle: jewelry
+#+export_file_name: index
+#+title: Jewelry
+#+date: 2024-03-23T18:16:20-04:00
+#+hugo_draft: true
 
 In the spring of 2025 I took a metal casting class and I decided to make
 a couple mathematically inspired pieces out of silver and bronze.
 
-
-## Clebsch Cubic Earrings/Pendant {#clebsch-cubic-earrings-pendant}
+** Clebsch Cubic Earrings/Pendant
 
 I have been fascinated by visualizing cubic surfaces for a while. Check out my
-[non-euclidean raytracer project that renders symmetric cubic
-surfaces](https:ruppec.github.io/2026mathcomps/posts/symmetric_cubics/).
+[[https:ruppec.github.io/2026mathcomps/posts/symmetric_cubics/][non-euclidean raytracer project that renders symmetric cubic
+surfaces]].
 
 For this project I made several pendants and a pair of earrings of the Clebsch cubic
 surface.
 
-
-### Mathematica Plot {#mathematica-plot}
-
+*** Mathematica Plot
 I started by plotting the following equation which gives one affine
 view of the Clebsch cubic:
 
-\\[
+
+\[
 {\displaystyle
 {\begin{array}{c}
-    81\left(x^{3}+y^{3}+z^{3}\right)-189\left(x^{2}\left(y+z\right)+y^{2}\left(z+x\right)+z^{2}\left(x+y\right)\right)+\\\\
+    81\left(x^{3}+y^{3}+z^{3}\right)-189\left(x^{2}\left(y+z\right)+y^{2}\left(z+x\right)+z^{2}\left(x+y\right)\right)+\\
     +54xyz+126\left(xy+yz+zx\right)-9\left(x^{2}+y^{2}+z^{2}\right)-9\left(x+y+z\right)+1=0.
 \end{array}}}
-\\]
+\]
 
 I had to tweak the settings a bit to get a mesh with sufficient quality. Here is
 the Mathematica code and the generated plot:
-
-```mathematica
-eq = 81 (x^3 + y^3 + z^3) -
-   189 (x^2 (y + z) + y^2 (z + x) + z^2 (x + y)) + 54 x y z +
-   126 ( x y + y z + z x) - 9 (x^2 + y^2 + z^2) - 9 ( x + y + z) +
+#+begin_src mathematica
+eq = 81 (x^3 + y^3 + z^3) - 
+   189 (x^2 (y + z) + y^2 (z + x) + z^2 (x + y)) + 54 x y z + 
+   126 ( x y + y z + z x) - 9 (x^2 + y^2 + z^2) - 9 ( x + y + z) + 
    1 ;
-ContourPlot3D[{eq == 0}, {x, y, z} \[Element] Ball[{0, 0, 0}, 1],
- PerformanceGoal -> "Quality", MaxRecursion -> 6, PlotPoints -> 120,
+ContourPlot3D[{eq == 0}, {x, y, z} \[Element] Ball[{0, 0, 0}, 1], 
+ PerformanceGoal -> "Quality", MaxRecursion -> 6, PlotPoints -> 120, 
  Boxed -> False, Axes -> False, Method -> {"ShrinkWrap" -> True}]
-```
+#+end_src
 
-<img src="clebschnb.webp"
-     alt="Clebsch Cubic Surface"
-     style="width: 50%; box-shadow: none; filter: drop-shadow(-5px 5px 15px gray);"
+
+#+begin_export html
+<img src="clebschnb.webp" 
+     alt="Clebsch Cubic Surface" 
+     style="width: 50%; box-shadow: none; filter: drop-shadow(-5px 5px 15px gray);" 
      loading="lazy">
+#+end_export
 
 
-### Design in Blender {#design-in-blender}
-
+*** Design in Blender
+    :PROPERTIES:
+    :CUSTOM_ID: design-in-blender
+    :END:
 I then had Mathematica export this plot as a .obj file and opened it in
 blender to add thickness to the surface.
 
-{{< figure src="clebschblender.webp" caption="<span class=\"figure-number\">Figure 1: </span>Blender Model of the Print" >}}
+#+caption: Blender Model of the Print
+[[file:clebschblender.webp]]
 
 At one point I was considering featuring the 27 lines in the final piece
 but I decided it would look too cluttered at the scale I was going for.
@@ -65,31 +69,32 @@ lines would restrict what sanding and polishing I could do at the end.
 
 After 3D printing in castable wax and attaching the red sprues for the metal to
 flow through, it was time to weigh the positives and determine how much metal
-was needed for the cast. ![](clebschsprues.webp)
+was needed for the cast. [[file:clebschsprues.webp]]
 
 I ended up making several bronze pendants and this set of silver
 earrings.
 
-
-## Balls of Nil and Sol Bracelet {#balls-of-nil-and-sol-bracelet}
-
+** Balls of Nil and Sol Bracelet
+   :PROPERTIES:
+   :CUSTOM_ID: balls-of-nil-and-sol-bracelet
+   :END:
 I also made a bracelet made of various metric balls in the Nil and Sol
 geometries.
 
-I was inspired by [Remi Coulon](https://rcoulon.perso.math.cnrs.fr/)'s 3D
-printing of [Spheres in
-the Nil and Sol Geometries](https://rcoulon.perso.math.cnrs.fr/improject/spheres/).
+I was inspired by [[https://rcoulon.perso.math.cnrs.fr/][Remi Coulon]]'s 3D
+printing of [[https://rcoulon.perso.math.cnrs.fr/improject/spheres/][Spheres in
+the Nil and Sol Geometries]].
+#+caption: The balls of radius 1, 2, 3, 4, 5, 6 in the Nil geometry.
+[[file:reminilballs.webp]]
 
-{{< figure src="reminilballs.webp" caption="<span class=\"figure-number\">Figure 2: </span>The balls of radius 1, 2, 3, 4, 5, 6 in the Nil geometry." >}}
-
-{{< figure src="remisolballs.webp" caption="<span class=\"figure-number\">Figure 3: </span>The ball of radius 1, 2, 3, 4 in the Sol geometry." >}}
+#+caption: The ball of radius 1, 2, 3, 4 in the Sol geometry.
+[[file:remisolballs.webp]]
 
 What is shown are a Euclidean view of non-Euclidean metric balls centered at the
 origin of various sizes, then rescaled to be roughly the same size.
-The Nil and Sol geometries are formed by taking \\(\mathbb R^3\\) and imposing a different metric.
+The Nil and Sol geometries are formed by taking $\mathbb R^3$ and imposing a different metric.
 
-
-### Creating the bracelet {#creating-the-bracelet}
+*** Creating the bracelet
 
 Rémi Coulon has some models on his website but I wanted more so I ended up
 writing Mathematica code to generate the surfaces.
@@ -97,23 +102,28 @@ writing Mathematica code to generate the surfaces.
 I then exported the objects to blender and arranged them with geometry
 nodes to make sure everything fit together.
 
-{{< figure src="nilspheresrender.webp" caption="<span class=\"figure-number\">Figure 4: </span>Computer Render of Bracelet of Nil and Sol spheres." >}}
+#+caption: Computer Render of Bracelet of Nil and Sol spheres.
+[[file:nilspheresrender.webp]]
 
 I then went through the same process of printing positives, sprueing, weighing,
 and casting. One detail that may be hard to see is that the models are actually
 hollow. That way you aren't wearing a massive piece of bronze on your wrist.
 
-{{< figure src="spheresprint.webp" caption="<span class=\"figure-number\">Figure 5: </span>First print of positives." >}}
+#+caption: First print of positives.
+[[file:spheresprint.webp]]
 
-{{< figure src="spheresprue.webp" caption="<span class=\"figure-number\">Figure 6: </span>Weighing the positives." >}}
+#+caption: Weighing the positives.
+[[file:spheresprue.webp]]
 
 To link everything together I made some brass jump rings and soldered the
 bracelet closed.
 
-{{< figure src="spheressolder.webp" caption="<span class=\"figure-number\">Figure 7: </span>Soldering the jump rings." >}}
+#+caption: Soldering the jump rings.
+[[file:spheressolder.webp]]
 
 To finish I did some spot sanding, and burnished with a metal brush and steel shot tumbling.
 
+#+begin_export html
 <div style="display: grid;
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
@@ -125,3 +135,5 @@ To finish I did some spot sanding, and burnished with a metal brush and steel sh
   <img src="spheresonmodel.webp" style="width: 100%; height: 100%; object-fit: cover;">
   <img src="sphereswrist.webp"   style="width: 100%; height: 100%; object-fit: cover;">
 </div>
+#+end_export
+

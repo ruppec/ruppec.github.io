@@ -45,6 +45,7 @@ figure {
     /* this prevents the side margins of link-wrapped images from being clickable*/
     img {
         display: inline;
+        margin: 0;
     }
 }
 
@@ -59,10 +60,20 @@ main a, footer a {
 }
 main a:hover {
     color: var(--link-red);
-    text-decoration-color: black;
+    color: var(--link-red)
 }
+
+#heading-and-nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 75px;
+}
+
 header {
-    text-wrap-mode: nowrap;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 15px;
 }
 header a {
     color: inherit;
@@ -81,6 +92,7 @@ header li {
 }
 header #horizontal-nav ul {
     margin-top: 5px;
+    padding-left: 0;
 }
 header #horizontal-nav ul li {
     display: inline-block;
@@ -104,9 +116,7 @@ header #horizontal-nav ul li:last-child {
 }
 #logo {
     height:75px;
-    width: auto;
-    float:left;
-    margin-right: 20px;
+    width: 75px;
     border-radius: 5%;
     filter: grayscale(100%);
     transition: filter 0.2s ease-in-out;
@@ -114,6 +124,7 @@ header #horizontal-nav ul li:last-child {
     border: 1px solid grey;
     box-shadow: 0 1px 0 rgba(255,255,255,.8);
     content-visibility: auto;
+    text-wrap: auto;
 }
 hr {
     border: none;
@@ -175,7 +186,6 @@ h2, h3, h4, h5, h6 {
 
 #sidebar h1 {
     margin: 0.5em 1em;
-    text-align: center;
 }
 
 #sidebar nav {
@@ -187,6 +197,9 @@ h2, h3, h4, h5, h6 {
 #sidebar nav ul {
     margin-top: 0;
     padding-left: 1em;
+    li::marker {
+        content: none
+    }
 }
 #sidebar nav > ul > li {
     padding-left: 5px;
@@ -235,27 +248,45 @@ h2, h3, h4, h5, h6 {
     }
 }
 
-details summary {
-    line-height: 1em;
-    padding-top: 0.2em;
-    color: var(--link-red);
-}
-details summary::marker {
-    content: "≡";
-    font-size: 3rem;
-}
-details {
-    text-align: right;
-    font-size: 2em;
-    ul {
-        list-style: none;
-        margin: 0;
-    }
-}
 
 #vertical-nav {
     display: none;
+    margin-left: auto;
+    width: 75px;
+    details {
+        width: 100%;
+        text-align: right;
+        font-size: 2em;
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            /* shift the menu left so the right side aligns with the
+               menu button */
+            width: 200px;
+            margin-left: -125px;
+            li {
+                margin: 5px 0;
+            }
+        }
+    }
+    details summary {
+        line-height: 1em;
+        color: var(--link-red);
+        top: -25px;
+        .inline-svg {
+            width: 75px;
+        }
+        cursor: pointer;
+    }
+    details summary::marker {
+        content: none;
+    }
+    details summary::-webkit-details-marker {
+        display: none;
+    }
 }
+
 @media(max-width: 480px) {
     #vertical-nav {
         display: inherit;
@@ -281,4 +312,16 @@ pre {
     }
     white-space: pre;
     overflow-x: auto;
+    padding: .4em;
+    background: #EEE;
+    border: 2px solid rgba(194,194,196,.1);
+}
+
+.inline-svg {
+    position: relative;
+    top: 0.25rem;
+    display: inline-block;
+    height: 1.25rem;
+    width: 1.25rem;
+    fill: currentcolor;
 }

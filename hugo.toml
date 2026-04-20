@@ -14,11 +14,10 @@ copyright = '© 2026 Charles Ruppe.'
 
 sectionPagesMenu = "main"
 
-[markup.goldmark.renderer]
-    unsafe = true
-
-
-
+[markup.highlight]
+    noClasses = true  # This is the crucial change
+    lineNos = false    # Set to true if you want numbers
+    style = "github"
 
 [markup.goldmark.parser]
     autoHeadingID = true
@@ -31,9 +30,19 @@ sectionPagesMenu = "main"
 
 [markup]
   [markup.goldmark]
+    [markup.goldmark.renderer]
+        unsafe = true
     [markup.goldmark.extensions]
-      [markup.goldmark.extensions.passthrough]
-        enable = true
+        [markup.goldmark.extensions.passthrough]
+            enable = true
         [markup.goldmark.extensions.passthrough.delimiters]
-          block = [['\[', '\]'], ['$$', '$$']]
-          inline = [['\(', '\)'], ['$', '$']]
+            block = [['\\[', '\\]'], ['$$', '$$']]
+            inline = [['\\(', '\\)'], ['$', '$']]
+
+
+# prevent hugo from seeing the .org files
+[module]
+  [[module.mounts]]
+    source = "content"
+    target = "content"
+    excludeFiles = ["**.org"]
