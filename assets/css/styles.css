@@ -56,7 +56,10 @@ a {
 main a, footer a {
     /*color: #0077c;*/
     color: inherit;
-    text-decoration: underline dotted;
+    text-decoration: underline;
+    text-decoration-line: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
 }
 main a:hover {
     color: var(--link-red);
@@ -274,13 +277,15 @@ h2, h3, h4, h5, h6 {
         line-height: 1em;
         color: var(--link-red);
         top: -25px;
+        list-style: none;/* needed to remove marker from safari*/
         .inline-svg {
             width: 75px;
         }
         cursor: pointer;
     }
     details summary::marker {
-        content: none;
+        content: "";
+        display: none
     }
     details summary::-webkit-details-marker {
         display: none;
