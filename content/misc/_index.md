@@ -72,3 +72,19 @@ interested in any of the diverse areas of mathematics requiring the notion of a
 differentiable manifold will find me extremely useful.  </p> <p>Which Springer
 GTM would <i>you</i> be?  <a href="http://math.jhu.edu/~savitt/GTM.html">The
 Springer GTM Test</a></p>
+
+
+[KaTeX](https://katex.org/)
+: This is a way of providing support for LaTeX equations on your website.
+  It's faster than MathJax and is built for more server-side rendering which
+  makes pages load faster for users.
+  
+  I also appreciate the
+  [copy-tex](https://github.com/KaTeX/KaTeX/tree/main/contrib/copy-tex)
+  extension. This makes you copy the underlying LaTeX code when you go to copy
+  the equation. Try it out here:
+  
+  $$ \int_{-\infty}^\infty e^{-x^2} \, \mathrm{d}x = \sqrt \pi $$
+  
+  You can even copy pieces (like $x$) with the text before and after the
+  equation.
