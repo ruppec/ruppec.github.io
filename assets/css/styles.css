@@ -89,7 +89,6 @@ header h1 {
 header li {
     color: var(--link-red);
     letter-spacing: .01em;
-    font-weight: 200;
     font-style: normal;
     font-size: .8em;
 }

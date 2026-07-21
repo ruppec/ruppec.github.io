@@ -3,10 +3,9 @@ title = "About"
 description = "The Homepage for my personal website which introduces me and my interests"
 +++
 
-I am a math undergraduate at Carleton College. My pronouns are he/him.
+I am an incoming Math PhD student at CU Boulder.
 
-I am interested in Algebraic Geometry, Commutative Algebra, and Geometric
-Topology.
+My pronouns are he/him.
 
 [My CV.](documents/Charlie_Ruppe_CV.pdf)
 

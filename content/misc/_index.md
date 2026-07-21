@@ -16,8 +16,8 @@ that I have tried to adopt. My site is designed with acessibility and low-bandwi
   if it can be improved in any way!
   
 [Hundredrabbits](https://100r.co/site/home.html)
-: The coolest blog I know. Lots of plan9 inspired software and tips for
-  surviving on boat journeys around the Pacific.
+: Lots of plan9 inspired software and tips for surviving on boat journeys around
+  the Pacific.
 
 
 [Color Scheme Picker](https://coolors.co/e5e5e5-b15656-094074-646f58-1b998b)
@@ -88,3 +88,8 @@ Springer GTM Test</a></p>
   
   You can even copy pieces (like $x$) with the text before and after the
   equation.
+  
+  If your website uses the more popular [MathJax](https://www.mathjax.org/) but
+  you want this easy-copying functionality I wrote [a quick script that does the
+  same for
+  MathJax. ](https://github.com/claudiojacobo/quarto-math-course-template/blob/main/.scripts/mathjax-copy.html)

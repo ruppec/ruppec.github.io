@@ -8,12 +8,11 @@ draft = false
 
 ## Senior Thesis 2026
 
-My senior thesis in math illustration is looking to generate new intuition for
-certain data and objects by visualizing them in non-euclidean spaces using
-computer graphics.
+My senior thesis was in math illustration. We were using computer graphics to
+generate new intuition for the geometry of solution sets of multivariable
+polynomials by visualizing them in a non-Euclidean space.
 
-Follow my progress at [the project website](/2026mathcomps).
-
+Check out our demos at [the project website](/2026mathcomps).
 
 ## Summer 2025
 "Asymptotic Invariants of Symbolic Powers of Binomial Edge Ideals" with
