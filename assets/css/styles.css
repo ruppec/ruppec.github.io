@@ -6,7 +6,7 @@
 /* creates the black bar when you try and scroll above the content*/
 html {  border-top: 2px solid #383838;}
 body { line-height: 1.6;
-       font-family: 'Helvetica Neue', 'Arial', sans-serif;
+       font-family: inter, 'Helvetica Neue', 'Arial', sans-serif;
        text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
        background: #e7e7e7 url("/images/body-bg.png") 0 0 repeat;
        margin: 0;
